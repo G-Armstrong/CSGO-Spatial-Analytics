@@ -86,8 +86,26 @@ r_total = 0
 # T_Loses_Postplant = [] #Convert to dataFrame
 # CT_Loses_Postplant = [] #convert to DataFreame
 
-T_Wins_Postplant = [] #Convert to dataFrame
-CT_Wins_Postplant = [] #convert to DataFreame
+# T_Wins_Postplant = [] #Convert to dataFrame
+# CT_Wins_Postplant = [] #convert to DataFreame
+
+#number 6
+T_Loses_Preplant_A_Vic = []
+CT_Loses_Preplant_A_Vic = []
+
+#number 7
+T_Wins_Preplant_A_Vic = []
+CT_Wins_Preplant_A_Vic = []
+
+#number 8
+T_Wins_Postplant_A_Vic = []
+CT_Wins_Postplant_A_Vic = []
+
+#number 9
+T_Loses_Postplant_A_Vic = []
+CT_Loses_Postplant_A_Vic = []
+
+
 for k,v in file_to_rounds.items(): #taking a single round at a time and splitting by pre and post plant
     for rnd in v:
         #Array_of_Preplant_A.append(data[(data['bomb_site'] != 'A') & (data['bomb_site'] != 'B') & (data['round'] == rnd) & (data['file'] == k)])
@@ -105,8 +123,24 @@ for k,v in file_to_rounds.items(): #taking a single round at a time and splittin
         # CT_Loses_Postplant.append(data[(data['bomb_site'] == 'A') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'CounterTerrorist') & (data['winner_side'] == 'Terrorist')].values.tolist())
         
         #number 5 in Spring 2021 project plan
-        T_Wins_Postplant.append(data[(data['bomb_site'] == 'A')  & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'Terrorist') & (data['winner_side'] == 'Terrorist')].values.tolist())
-        CT_Wins_Postplant.append(data[(data['bomb_site'] == 'A') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'CounterTerrorist') & (data['winner_side'] == 'CounterTerrorist')].values.tolist())
+        # T_Wins_Postplant.append(data[(data['bomb_site'] == 'A')  & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'Terrorist') & (data['winner_side'] == 'Terrorist')].values.tolist())
+        # CT_Wins_Postplant.append(data[(data['bomb_site'] == 'A') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'CounterTerrorist') & (data['winner_side'] == 'CounterTerrorist')].values.tolist())       
+        
+        #number 6
+        # T_Loses_Preplant_A_Vic.append(data[(data['bomb_site'] != 'A') & (data['bomb_site'] != 'B') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'CounterTerrorist') & (data['winner_side'] == 'CounterTerrorist')].values.tolist())
+        # CT_Loses_Preplant_A_Vic.append(data[(data['bomb_site'] != 'A') & (data['bomb_site'] != 'B') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'Terrorist') & (data['winner_side'] == 'Terrorist')].values.tolist())
+        
+        # #number 7
+        #T_Wins_Preplant_A_Vic.append(data[(data['bomb_site'] != 'A') & (data['bomb_site'] != 'B') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'CounterTerrorist') & (data['winner_side'] == 'Terrorist')].values.tolist())
+        #CT_Wins_Preplant_A_Vic.append(data[(data['bomb_site'] != 'A') & (data['bomb_site'] != 'B') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'Terrorist') & (data['winner_side'] == 'CounterTerrorist')].values.tolist())
+        
+        # #number 8
+        #T_Wins_Postplant_A_Vic.append(data[(data['bomb_site'] == 'A') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'CounterTerrorist') & (data['winner_side'] == 'Terrorist')].values.tolist())
+        #CT_Wins_Postplant_A_Vic.append(data[(data['bomb_site'] == 'A') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'Terrorist') & (data['winner_side'] == 'CounterTerrorist')].values.tolist())
+        
+        # #number 9
+        T_Loses_Postplant_A_Vic.append(data[(data['bomb_site'] == 'A') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'CounterTerrorist') & (data['winner_side'] == 'CounterTerrorist')].values.tolist())
+        CT_Loses_Postplant_A_Vic.append(data[(data['bomb_site'] == 'A') & (data['round'] == rnd) & (data['file'] == k) & (data['att_side'] == 'Terrorist') & (data['winner_side'] == 'Terrorist')].values.tolist())
 
 #remove empty lists
 # t_remove_empties = [ele for ele in T_Wins_Preplant if ele != []]
@@ -121,8 +155,24 @@ for k,v in file_to_rounds.items(): #taking a single round at a time and splittin
 # ct_remove_empties = [ele for ele in CT_Loses_Postplant if ele != []]
 
 #number 5
-t_remove_empties = [ele for ele in T_Wins_Postplant if ele != []]
-ct_remove_empties = [ele for ele in CT_Wins_Postplant if ele != []]
+# t_remove_empties = [ele for ele in T_Wins_Postplant if ele != []]
+# ct_remove_empties = [ele for ele in CT_Wins_Postplant if ele != []]
+
+#number 6
+#t_remove_empties = [ele for ele in T_Loses_Preplant_A_Vic if ele != []]
+#ct_remove_empties = [ele for ele in CT_Loses_Preplant_A_Vic if ele != []]
+
+#number 7
+#t_remove_empties = [ele for ele in T_Wins_Preplant_A_Vic if ele != []]
+#ct_remove_empties = [ele for ele in CT_Wins_Preplant_A_Vic if ele != []]
+
+# #number 8
+#t_remove_empties = [ele for ele in T_Wins_Postplant_A_Vic if ele != []]
+#ct_remove_empties = [ele for ele in CT_Wins_Postplant_A_Vic if ele != []]
+
+# #number 9
+t_remove_empties = [ele for ele in T_Loses_Postplant_A_Vic if ele != []]
+ct_remove_empties = [ele for ele in CT_Loses_Postplant_A_Vic if ele != []]
 
 #check if lists are the same
 # t_remove_empties.sort() 
@@ -161,11 +211,47 @@ ct_flat_list = [arr for sub_arrs in ct_remove_empties for arr in sub_arrs]
 #                                                                 'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
 
 #number 5
-T_Wins_Postplant_A_df = pd.DataFrame(t_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
+# T_Wins_Postplant_A_df = pd.DataFrame(t_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
+#                                                                 'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id','att_rank','vic_id','vic_rank','att_pos_x','att_pos_y','vic_pos_x',
+#                                                                 'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
+
+# CT_Wins_Postplant_A_df = pd.DataFrame(ct_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
+#                                                                 'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id','att_rank','vic_id','vic_rank','att_pos_x','att_pos_y','vic_pos_x',
+#                                                                 'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
+
+#number 6
+#T_Loses_Preplant_A_Vic_df = pd.DataFrame(t_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
+#                                                                'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id','att_rank','vic_id','vic_rank','att_pos_x','att_pos_y','vic_pos_x',
+#                                                                'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
+
+#CT_Loses_Preplant_A_Vic_df = pd.DataFrame(ct_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
+#                                                                'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id','att_rank','vic_id','vic_rank','att_pos_x','att_pos_y','vic_pos_x',
+#                                                                'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
+
+#number 7
+# T_Wins_Preplant_A_Vic_df = pd.DataFrame(t_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
+#                                                               'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id','att_rank','vic_id','vic_rank','att_pos_x','att_pos_y','vic_pos_x',
+#                                                                  'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
+
+# CT_Wins_Preplant_A_Vic_df = pd.DataFrame(ct_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
+#                                                                  'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id','att_rank','vic_id','vic_rank','att_pos_x','att_pos_y','vic_pos_x',
+#                                                                  'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
+
+# #number 8
+#T_Wins_Postplant_A_Vic_df = pd.DataFrame(t_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
+#                                                                 'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id','att_rank','vic_id','vic_rank','att_pos_x','att_pos_y','vic_pos_x',
+#                                                                'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
+
+#CT_Wins_Postplant_A_Vic_df = pd.DataFrame(ct_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
+#                                                                 'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id','att_rank','vic_id','vic_rank','att_pos_x','att_pos_y','vic_pos_x',
+#                                                                 'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
+
+# #number 9
+T_Loses_Postplant_A_Vic_df = pd.DataFrame(t_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
                                                                 'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id','att_rank','vic_id','vic_rank','att_pos_x','att_pos_y','vic_pos_x',
                                                                 'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
 
-CT_Wins_Postplant_A_df = pd.DataFrame(ct_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
+CT_Loses_Postplant_A_Vic_df = pd.DataFrame(ct_flat_list, columns =['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
                                                                 'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id','att_rank','vic_id','vic_rank','att_pos_x','att_pos_y','vic_pos_x',
                                                                 'vic_pos_y','round_type','ct_eq_val','t_eq_val','avg_match_rank'])
 
@@ -203,15 +289,59 @@ CT_Wins_Postplant_A_df = pd.DataFrame(ct_flat_list, columns =['Unnamed: 0','file
 # CT_Loses_Postplant_A_df['victim_mapY'] = CT_Loses_Postplant_A_df['vic_pos_y'].apply(pointy_to_resolutiony)
 
 #number 5
-T_Wins_Postplant_A_df['attacker_mapX'] = T_Wins_Postplant_A_df['att_pos_x'].apply(pointx_to_resolutionx)
-T_Wins_Postplant_A_df['attacker_mapY'] = T_Wins_Postplant_A_df['att_pos_y'].apply(pointy_to_resolutiony)
-T_Wins_Postplant_A_df['victim_mapX'] = T_Wins_Postplant_A_df['vic_pos_x'].apply(pointx_to_resolutionx)
-T_Wins_Postplant_A_df['victim_mapY'] = T_Wins_Postplant_A_df['vic_pos_y'].apply(pointy_to_resolutiony)
+# T_Wins_Postplant_A_df['attacker_mapX'] = T_Wins_Postplant_A_df['att_pos_x'].apply(pointx_to_resolutionx)
+# T_Wins_Postplant_A_df['attacker_mapY'] = T_Wins_Postplant_A_df['att_pos_y'].apply(pointy_to_resolutiony)
+# T_Wins_Postplant_A_df['victim_mapX'] = T_Wins_Postplant_A_df['vic_pos_x'].apply(pointx_to_resolutionx)
+# T_Wins_Postplant_A_df['victim_mapY'] = T_Wins_Postplant_A_df['vic_pos_y'].apply(pointy_to_resolutiony)
 
-CT_Wins_Postplant_A_df['attacker_mapX'] = CT_Wins_Postplant_A_df['att_pos_x'].apply(pointx_to_resolutionx)
-CT_Wins_Postplant_A_df['attacker_mapY'] = CT_Wins_Postplant_A_df['att_pos_y'].apply(pointy_to_resolutiony)
-CT_Wins_Postplant_A_df['victim_mapX'] = CT_Wins_Postplant_A_df['vic_pos_x'].apply(pointx_to_resolutionx)
-CT_Wins_Postplant_A_df['victim_mapY'] = CT_Wins_Postplant_A_df['vic_pos_y'].apply(pointy_to_resolutiony)
+# CT_Wins_Postplant_A_df['attacker_mapX'] = CT_Wins_Postplant_A_df['att_pos_x'].apply(pointx_to_resolutionx)
+# CT_Wins_Postplant_A_df['attacker_mapY'] = CT_Wins_Postplant_A_df['att_pos_y'].apply(pointy_to_resolutiony)
+# CT_Wins_Postplant_A_df['victim_mapX'] = CT_Wins_Postplant_A_df['vic_pos_x'].apply(pointx_to_resolutionx)
+# CT_Wins_Postplant_A_df['victim_mapY'] = CT_Wins_Postplant_A_df['vic_pos_y'].apply(pointy_to_resolutiony)
+
+#number 6
+# T_Loses_Preplant_A_Vic_df['attacker_mapX'] = T_Loses_Preplant_A_Vic_df['att_pos_x'].apply(pointx_to_resolutionx)
+# T_Loses_Preplant_A_Vic_df['attacker_mapY'] = T_Loses_Preplant_A_Vic_df['att_pos_y'].apply(pointy_to_resolutiony)
+# T_Loses_Preplant_A_Vic_df['victim_mapX'] = T_Loses_Preplant_A_Vic_df['vic_pos_x'].apply(pointx_to_resolutionx)
+# T_Loses_Preplant_A_Vic_df['victim_mapY'] = T_Loses_Preplant_A_Vic_df['vic_pos_y'].apply(pointy_to_resolutiony)
+
+# CT_Loses_Preplant_A_Vic_df['attacker_mapX'] = CT_Loses_Preplant_A_Vic_df['att_pos_x'].apply(pointx_to_resolutionx)
+# CT_Loses_Preplant_A_Vic_df['attacker_mapY'] = CT_Loses_Preplant_A_Vic_df['att_pos_y'].apply(pointy_to_resolutiony)
+# CT_Loses_Preplant_A_Vic_df['victim_mapX'] = CT_Loses_Preplant_A_Vic_df['vic_pos_x'].apply(pointx_to_resolutionx)
+# CT_Loses_Preplant_A_Vic_df['victim_mapY'] = CT_Loses_Preplant_A_Vic_df['vic_pos_y'].apply(pointy_to_resolutiony)
+
+#number 7
+# T_Wins_Preplant_A_Vic_df['attacker_mapX'] = T_Wins_Preplant_A_Vic_df['att_pos_x'].apply(pointx_to_resolutionx)
+# T_Wins_Preplant_A_Vic_df['attacker_mapY'] = T_Wins_Preplant_A_Vic_df['att_pos_y'].apply(pointy_to_resolutiony)
+# T_Wins_Preplant_A_Vic_df['victim_mapX'] = T_Wins_Preplant_A_Vic_df['vic_pos_x'].apply(pointx_to_resolutionx)
+# T_Wins_Preplant_A_Vic_df['victim_mapY'] = T_Wins_Preplant_A_Vic_df['vic_pos_y'].apply(pointy_to_resolutiony)
+
+# CT_Wins_Preplant_A_Vic_df['attacker_mapX'] = CT_Wins_Preplant_A_Vic_df['att_pos_x'].apply(pointx_to_resolutionx)
+# CT_Wins_Preplant_A_Vic_df['attacker_mapY'] = CT_Wins_Preplant_A_Vic_df['att_pos_y'].apply(pointy_to_resolutiony)
+# CT_Wins_Preplant_A_Vic_df['victim_mapX'] = CT_Wins_Preplant_A_Vic_df['vic_pos_x'].apply(pointx_to_resolutionx)
+# CT_Wins_Preplant_A_Vic_df['victim_mapY'] = CT_Wins_Preplant_A_Vic_df['vic_pos_y'].apply(pointy_to_resolutiony)
+
+# #number 8
+# T_Wins_Postplant_A_Vic_df['attacker_mapX'] = T_Wins_Postplant_A_Vic_df['att_pos_x'].apply(pointx_to_resolutionx)
+# T_Wins_Postplant_A_Vic_df['attacker_mapY'] = T_Wins_Postplant_A_Vic_df['att_pos_y'].apply(pointy_to_resolutiony)
+# T_Wins_Postplant_A_Vic_df['victim_mapX'] = T_Wins_Postplant_A_Vic_df['vic_pos_x'].apply(pointx_to_resolutionx)
+# T_Wins_Postplant_A_Vic_df['victim_mapY'] = T_Wins_Postplant_A_Vic_df['vic_pos_y'].apply(pointy_to_resolutiony)
+
+# CT_Wins_Postplant_A_Vic_df['attacker_mapX'] = CT_Wins_Postplant_A_Vic_df['att_pos_x'].apply(pointx_to_resolutionx)
+# CT_Wins_Postplant_A_Vic_df['attacker_mapY'] = CT_Wins_Postplant_A_Vic_df['att_pos_y'].apply(pointy_to_resolutiony)
+# CT_Wins_Postplant_A_Vic_df['victim_mapX'] = CT_Wins_Postplant_A_Vic_df['vic_pos_x'].apply(pointx_to_resolutionx)
+# CT_Wins_Postplant_A_Vic_df['victim_mapY'] = CT_Wins_Postplant_A_Vic_df['vic_pos_y'].apply(pointy_to_resolutiony)
+
+# #number 9
+T_Loses_Postplant_A_Vic_df['attacker_mapX'] = T_Loses_Postplant_A_Vic_df['att_pos_x'].apply(pointx_to_resolutionx)
+T_Loses_Postplant_A_Vic_df['attacker_mapY'] = T_Loses_Postplant_A_Vic_df['att_pos_y'].apply(pointy_to_resolutiony)
+T_Loses_Postplant_A_Vic_df['victim_mapX'] = T_Loses_Postplant_A_Vic_df['vic_pos_x'].apply(pointx_to_resolutionx)
+T_Loses_Postplant_A_Vic_df['victim_mapY'] = T_Loses_Postplant_A_Vic_df['vic_pos_y'].apply(pointy_to_resolutiony)
+
+CT_Loses_Postplant_A_Vic_df['attacker_mapX'] = CT_Loses_Postplant_A_Vic_df['att_pos_x'].apply(pointx_to_resolutionx)
+CT_Loses_Postplant_A_Vic_df['attacker_mapY'] = CT_Loses_Postplant_A_Vic_df['att_pos_y'].apply(pointy_to_resolutiony)
+CT_Loses_Postplant_A_Vic_df['victim_mapX'] = CT_Loses_Postplant_A_Vic_df['vic_pos_x'].apply(pointx_to_resolutionx)
+CT_Loses_Postplant_A_Vic_df['victim_mapY'] = CT_Loses_Postplant_A_Vic_df['vic_pos_y'].apply(pointy_to_resolutiony)
     
 # # Heat map
 im = plt.imread('./input/de_mirage.png')
@@ -221,5 +351,8 @@ plt.figure(figsize=(20,20))
 t = plt.imshow(im)
 ct = plt.imshow(im)
 
-t = plt.scatter(T_Wins_Postplant_A_df['attacker_mapX'], T_Wins_Postplant_A_df['attacker_mapY'],alpha=0.04,c='orange')
-#ct = plt.scatter(CT_Wins_Postplant_A_df['attacker_mapX'], CT_Wins_Postplant_A_df['attacker_mapY'],alpha=0.04,c='blue')
+#t = plt.scatter(T_Loses_Preplant_A_Vic_df['attacker_mapX'], T_Loses_Preplant_A_Vic_df['attacker_mapY'],alpha=0.04,c='orange')
+#ct = plt.scatter(CT_Loses_Preplant_A_Vic_df['attacker_mapX'], CT_Loses_Preplant_A_Vic_df['attacker_mapY'],alpha=0.04,c='blue')
+
+#t = plt.scatter(T_Loses_Postplant_A_Vic_df['victim_mapX'], T_Loses_Postplant_A_Vic_df['victim_mapY'],alpha=0.04,c='orange')
+ct = plt.scatter(CT_Loses_Postplant_A_Vic_df['victim_mapX'], CT_Loses_Postplant_A_Vic_df['victim_mapY'],alpha=0.04,c='blue')
