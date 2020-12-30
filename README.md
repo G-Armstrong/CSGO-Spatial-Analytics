@@ -19,11 +19,16 @@
 * End of First Semester Presentation (PPT)
 
 ## 12/22/2020
-* Planned Spring 2021 goals and modified code to reflect the aggressors in egagements ('att_side' == ...)
+* Planned Spring 2021 goals and modified code to reflect the aggressors in engagements ('att_side' == ...)
 
 ## Update 12/28/2020
-* Finished pre and postplant heatmaps where both sides are aggressors in egagements 
+* Finished pre and postplant heatmaps where both sides are aggressors in engagements
+
+## 12/29/2020
+* Finished pre and postplant heatmaps where both sides are victims in engagements
 
 ## TODO
-* Pre and Postplants Heatmaps where both sides are victims in engagements
+* ~~Pre and Postplants Heatmaps where both sides are victims in engagements~~
+* Create simuation of single round
+* Rename *reader.py*
 
