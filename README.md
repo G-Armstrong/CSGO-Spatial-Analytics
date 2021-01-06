@@ -27,6 +27,9 @@
 ## 12/29/2020
 * Finished pre and postplant heatmaps where both sides are victims in engagements
 
+## 1/5/2021
+* Progress made on single round animation. Isolated 10 players in data for that single round
+
 ## TODO
 * ~~Pre and Postplants Heatmaps where both sides are victims in engagements~~
 * Create simuation of single round
