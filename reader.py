@@ -4,11 +4,10 @@ Created on Sun Nov 29 20:34:59 2020
 
 @author: Grant
 """
-import numpy as np
+
 import pandas as pd
 import matplotlib.pyplot as plt
 #import seaborn as sns
-import os
 import pickle
 from src import Writer
 writer = Writer()
@@ -76,7 +75,7 @@ file_to_rounds = pickle.loads(_input)
 
 #Array_of_Preplant_A = []
 #Array_of_Postplant_A = []
-r_total = 0
+#r_total = 0
 #T_Wins_Preplant = [] #Convert to dataFrame
 #CT_Wins_Preplant = [] #convert to DataFreame
 
