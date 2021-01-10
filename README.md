@@ -30,6 +30,11 @@
 ## 1/5/2021
 * Progress made on single round animation. Isolated 10 players in data for that single round
 
+## 1/9/2021
+* Created method to track individual attacking player on heat map
+* Created method to find individual player ID
+* Created method to find IDs of all players and assign them to their respective teams 
+
 ## TODO
 * ~~Pre and Postplants Heatmaps where both sides are victims in engagements~~
 * Create simuation of single round

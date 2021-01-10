@@ -50,7 +50,7 @@ def pointy_to_resolutiony(yinput,startY=-3401,endY=1682,resY=1024):
 #returns two arrays of victims and attackers in one game from one round
 #find a round where A is attacked
 #find a file that contains the most lines of captured data 
-def find_players(file, rnd):
+def find_player(file, rnd):
     sim_round_one = (data[(data['round'] == rnd) & (data['file'] == file)].values.tolist())
 
     #make sure there are <= 10 att_id's
