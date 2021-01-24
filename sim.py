@@ -50,7 +50,8 @@ def pointy_to_resolutiony(yinput,startY=-3401,endY=1682,resY=1024):
 #returns two arrays of victims and attackers in one game from one round
 #find a round where A is attacked
 #find a file that contains the most lines of captured data 
-def find_player(file, rnd):
+#Return: List of att ids & List of vic ids
+def find_player_ids_in_round(file, rnd):
     sim_round_one = (data[(data['round'] == rnd) & (data['file'] == file)].values.tolist())
 
     #make sure there are <= 10 att_id's
@@ -67,8 +68,9 @@ def find_player(file, rnd):
     
     return filtered_att_id_list,filtered_vic_id_list
 
-#track 1 player through round
-def track_player(player_id, file, rnd, attacking):
+#Get data for a single player in a single round in a game (attacking/defending)
+#Return: DataFrame of round
+def find_player_in_round(player_id, file, rnd, attacking):
     if attacking == True:
         single_round = data[(data['round'] == rnd) & (data['file'] == file) & (data['att_id'] == player_id)]
         
@@ -77,6 +79,8 @@ def track_player(player_id, file, rnd, attacking):
     
     return single_round
 
+#get all player ids in a file
+#Return: list of t and ct ids (10)
 def find_team_ids(file):
     #['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side','vic_side','hp_dmg','arm_dmg','is_bomb_planted',
 #                                                                 'bomb_site','hitbox','wp','wp_type','award','winner_team','winner_side','att_id',
@@ -88,7 +92,6 @@ def find_team_ids(file):
     game_data = data[(data['file'] == file) & (data['round'] < 16) & (data['att_id'] != 0)]
     for index, row in game_data.iterrows():
         if row['att_side'] == "CounterTerrorist":
-            print(row['att_id'])
             if row['att_id'] not in list_of_ct_ids:
                 list_of_ct_ids.append(row['att_id'])
             
@@ -98,55 +101,77 @@ def find_team_ids(file):
                 
     return list_of_ct_ids, list_of_t_ids
 
-#track 1 player through round
-# def produce_maps_for_team(df, team):
-#     df_copy = df.copy()
-    
-#     if team == "CT":
-#         df_copy['attacker_mapX'] = df_copy['att_pos_x'].apply(pointx_to_resolutionx)
-#         df_copy['attacker_mapY'] = df_copy['att_pos_y'].apply(pointy_to_resolutiony)
-
-#     else:
-
-
-def produce_maps_from_list(df, attacking):
-    df_copy = df.copy()
-    if attacking == True:
-            df_copy['attacker_mapX'] = df_copy['att_pos_x'].apply(pointx_to_resolutionx)
-            df_copy['attacker_mapY'] = df_copy['att_pos_y'].apply(pointy_to_resolutiony)
-    
-    else:
-            df_copy['victim_mapX'] = df_copy['vic_pos_x'].apply(pointx_to_resolutionx)
-            df_copy['victim_mapY'] = df_copy['vic_pos_y'].apply(pointy_to_resolutiony)
+#given a dataframe of a round return maps on one side
+def produce_maps_from_list_single(single_round_df, ct_list):
+    print("here")
+    single_round_copy = single_round_df.copy()
+        
+    single_round_copy['attacker_mapX'] = single_round_copy['att_pos_x'].apply(pointx_to_resolutionx)
+    single_round_copy['attacker_mapY'] = single_round_copy['att_pos_y'].apply(pointy_to_resolutiony)
+    single_round_copy['victim_mapX'] = single_round_copy['vic_pos_x'].apply(pointx_to_resolutionx)
+    single_round_copy['victim_mapY'] = single_round_copy['vic_pos_y'].apply(pointy_to_resolutiony)
     
     # # Heat map
     im = plt.imread('./input/de_mirage.png')
     
-    for index, row in df_copy.iterrows():
-        plt.figure(figsize=(20,20))
-
-        new_plt = plt.imshow(im)
+    for index, row in single_round_copy.iterrows():
+        if row['att_id'] in ct_list:
+            plt.figure(figsize=(20,20))
         
-        if attacking == True:
-            new_plt = plt.scatter(row['attacker_mapX'], row['attacker_mapY'],alpha=1,c='blue')
-        
+            new_plt = plt.imshow(im)
+            
+            new_plt = plt.scatter(row['attacker_mapX'], row['attacker_mapY'],alpha=1, c = row['ct_color'])
+            
         else:
-            new_plt = plt.scatter(row['victim_mapX'], row['victim_mapY'],alpha=0.04,c='orange')
+            plt.figure(figsize=(20,20))
         
+            new_plt = plt.imshow(im)
+            
+            new_plt = plt.scatter(row['victim_mapX'], row['victim_mapY'],alpha=1,c='white')
+        
+#Track one side
+#needs lists of ids for both teams, id1 and id2
+def produce_maps_for_each_team(df, ct_list, file, rnd):
+    df_copy = df.copy()
+    att_ids = []
+    vic_ids = []
+    #assign each player a shade of color (green)
+    ct_color = ['deepskyblue','cyan', 'springgreen', 'blue', 'blueviolet']
+    t_color = ['orange', 'yellow', 'red', 'peru', 'pink']
+    #change color when id changes to vic (red)
+    #do we change back?
     
+    single_round_df = df_copy[(df_copy['round'] == rnd) & (df_copy['file'] == file)]
+    single_round_df.insert(0, 'ct_color', 'NaN')
+    
+    #adding colors to DF
+    for index, row in single_round_df.iterrows():
+        for _id in ct_list:
+            #check if att or vic (has to be one or other)
+            if row['att_id'] == _id:
+                single_round_df.at[index, 'ct_color'] = ct_color[ct_list.index(_id)]
+                    
+            if row['vic_id'] == _id:
+                 single_round_df.at[index, 'ct_color'] = 'white'
+    
+    #print maps with new colors
+    produce_maps_from_list_single(single_round_df, ct_list)
 
-att_list, vic_list = find_players("003218553373129179487_1555113029.dem", 4)
 
-single_round_df = track_player(76561198152153688, "003218553373129179487_1555113029.dem", 4, True)
+#Track both sides
 
-#produce_maps_from_list(single_round_df, True)
 
+#get attacker and victim lists for a round
+att_list, vic_list = find_player_ids_in_round("003218553373129179487_1555113029.dem", 4)
+
+#get single round df from playerID, game, round, attacking == True
+single_round_df = find_player_in_round(76561198152153688, "003218553373129179487_1555113029.dem", 4, True)
+
+#Return ids for a game
 ct_ids, t_ids = find_team_ids("003218553373129179487_1555113029.dem")
 
-print(ct_ids)
-print()
-print(t_ids)
+produce_maps_for_each_team(data, ct_ids,"003218553373129179487_1555113029.dem", 4)
 
-#save maps to folder in addition to printing 
+    
 
 
