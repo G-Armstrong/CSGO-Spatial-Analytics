@@ -35,13 +35,15 @@
 * Created method to find individual player ID
 * Created method to find IDs of all players and assign them to their respective teams 
 
-## 1/23/202
+## 1/23/2021
 * 64 lines of code changed
 * Created new heat maps that take a single round and display unique colors for CTs players and wether or not they are the victims or attackers in their engagements
 
+## 1/26/2021
+* Finalized animation of single round, planning next steps
+
 ## TODO
 * ~~Pre and Postplants Heatmaps where both sides are victims in engagements~~
-* Create simuation of single round 
-  * 1/2 way there!
-* Rename *reader.py*
+* ~~Create simuation of single round 
+
 
