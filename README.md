@@ -42,6 +42,12 @@
 ## 1/26/2021
 * Finalized animation of single round, planning next steps
 
+## 2/2/2021
+* Created a list of 23 features to track to determine player roles
+
+## 2/8/2021
+* Began tracking player features and applied weights to each of these features to be used later for assigned player roles based on historical data 
+
 ## TODO
 * ~~Pre and Postplants Heatmaps where both sides are victims in engagements~~
 * ~~Create simuation of single round 
