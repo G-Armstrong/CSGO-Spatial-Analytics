@@ -14,7 +14,6 @@ from src import Writer
 writer = Writer()
 
 
-
 #make empty df   
 data = pd.DataFrame()
 
@@ -46,12 +45,10 @@ def find_team_ids(file):
     return list_of_ct_ids, list_of_t_ids
 
 
-
-
-
-
 # Make method to loop through single round to determine which player fills what role
-def all_roles_in_round(df, file, rnd):
+def all_roles_in_round(df, file, rnd): 
+    
+############################### VARIABLES ###############################
     single_round = data[(data['round'] == rnd) & (data['file'] == file)]
     
     ct_list, t_list = find_team_ids(file)
@@ -67,22 +64,36 @@ def all_roles_in_round(df, file, rnd):
     
     #add zeros
     for  player in array_player_vals:
-        for i in range(22):
+        for i in range(25):
             player.append(0)
-    
+        player[16] = []
     
     first_dmg_counter = 20
     value = 5
     dup_ids_first = []
-    last_row_rifler_id = 0
-    last_row_sniper_id = 0
-    last_row_pistol_id = 0
+    
+    last_row_id = 0
     
     dmg_pairs = []
     kill_pairs = []
     last_5_row_kill_pairs = [[],[],[],[],[]]
-    new_dmg_pair_flag = 1
+    preplant_kills = []
+    postplant_kills = []
     
+    new_dmg_pair_flag = 1
+
+############################### GAMES LOOP ###############################
+    
+############################### ROUNDS LOOP ###############################
+    
+# TO DO
+# Keep track of end of last round kill seconds [16] FIX 16 cant be array
+    
+
+############################### ROWS LOOP ###############################
+    #To Do
+    #Change wp kill check when dmg pair is added to kill pair 
+    # delete 157 - 172
     
     for index, row in single_round.iterrows():
           #['Unnamed: 0','file','map','date','round','tick','seconds','att_team','vic_team','att_side',
@@ -94,30 +105,36 @@ def all_roles_in_round(df, file, rnd):
           
         #tally dmg pairs
         if len(dmg_pairs) == 0:
-            dmg_pairs.append([row['att_id'], row['vic_id'], row['hp_dmg']])
+            dmg_pairs.append([row['att_id'], row['vic_id'], row['hp_dmg'], row['seconds']])
             
         for pair in dmg_pairs:
-            if pair[0] == row['att_id'] and pair[1] == row['vic_id']:
+            if pair[1] == row['vic_id']:
                 pair[2] = pair[2] + row['hp_dmg']
                 new_dmg_pair_flag = 0
+                #do edge case kill check for non solo kills
+                if pair[2] >= 100 and row['att_id'] != pair[0]:
+                    #print(row['att_id'], "stole kill", pair[1])
+                    kill_pairs.append([row['att_id'], pair[1], 100, row['seconds']])
+                    last_5_row_kill_pairs[4] = [row['att_id'], pair[1], 100]
+                    dmg_pairs.remove(pair)
+                
                 
             
         if new_dmg_pair_flag == 1:
-            dmg_pairs.append([row['att_id'], row['vic_id'], row['hp_dmg']])
-        
-        #check for kill pairs
-        ''' TO DO
-            check if victim was killed by 2 people (non solo kill), isoloate pair[1] and pair[2] over entire dmg list
-            then add to last_5_row+kill pair ------- give credit to last player to dealt damage
-        
-        '''
-        for pair in dmg_pairs:   
+            dmg_pairs.append([row['att_id'], row['vic_id'], row['hp_dmg'], row['seconds']])
+            
+        #do kill check here
+        #print(dmg_pairs)
+        for pair in dmg_pairs:
             if pair[2] >= 100:
+                #print(pair[1], 'adding to kill pair')
+                #print(kill_pairs)
                 kill_pairs.append(pair)
-                last_5_row_kill_pairs[4] = pair
+                last_5_row_kill_pairs[4] = pair.copy()
                 dmg_pairs.remove(pair)
+                
 
-        # First_kill
+        # First_kill 1
         if first_dmg_counter != 0:
             for player in array_player_vals:
                 if player[0] == row['att_id'] and player[0] not in dup_ids_first:
@@ -128,67 +145,87 @@ def all_roles_in_round(df, file, rnd):
                     
             first_dmg_counter = first_dmg_counter - 1
        
-        # SMG_kill
-        # SHOTGUN_kill
-        # MACHINEGUN_kill
+        # SMG_kill 2
+        # SHOTGUN_kill 3
+        # MACHINEGUN_kill 4
         
-        # RIFLE_kill
+        # RIFLE_kill 5
         for player in array_player_vals:
-            if player[0] == row['att_id'] and row['wp_type'] == 'Rifle' and player[0] != last_row_rifler_id:
-                player[4] += 1
-                
-        last_row_rifler_id = row['att_id']
-            
-        # SNIPER_kill
-        for player in array_player_vals:
-            if player[0] == row['att_id'] and row['wp_type'] == 'Sniper' and player[0] != last_row_sniper_id:
+            if player[0] == row['att_id'] and row['wp_type'] == 'Rifle' and player[0] != last_row_id:
                 player[5] += 1
+            
+        # SNIPER_kill 6
+        for player in array_player_vals:
+            if player[0] == row['att_id'] and row['wp_type'] == 'Sniper' and player[0] != last_row_id:
+                player[6] += 1
                 
-        last_row_sniper_id = row['att_id']
         
-        # PISTOL_kill
+        # PISTOL_kill 7
         if row['round_type'] == 'NORMAL':
             for player in array_player_vals:
-                if player[0] == row['att_id'] and row['wp_type'] == 'Pistol' and player[0] != last_row_pistol_id:
-                    player[6] += 1
+                if player[0] == row['att_id'] and row['wp_type'] == 'Pistol' and player[0] != last_row_id:
+                    player[7] += 1
                 
-        last_row_pistol_id = row['att_id']
         
-        # TRADE_KILL
-        ''' TO-DO
-            change to only check in last 5 row kill pairs, cannot ref current row
-        
-        '''
+        # TRADE_KILL 8
         if len(last_5_row_kill_pairs) > 1:
-            for pair in last_5_row_kill_pairs:
-                #if not empty and if the current victim was an attacker
-                if pair and [row['att_id'], row['vic_id'], 100] in last_5_row_kill_pairs and row['vic_id'] == pair[0]:
-                    for player in array_player_vals:
-                        if row['att_id'] == player[0]:
-                            player[7] = player[7] + 1
-                            index = last_5_row_kill_pairs.index(pair)
-                            last_5_row_kill_pairs[index].clear()
-                            print(last_5_row_kill_pairs)
-                            break
-                    break
+            for pair1 in last_5_row_kill_pairs:
+                for pair2 in last_5_row_kill_pairs:
+                    #if neither are empty and if pair1[0] attacker is now dead (pair2[1]), give trade kill credit to attacker (pair2[0])
+                    if pair1 and pair2 and pair1[0] == pair2[1]:
+                        for player in array_player_vals:
+                            if pair2[0] == player[0]:
+                                #print("trade kill found", pair1, pair2)
+                                player[8] = player[8] + 1
+                                #remove credit for orginal attacker (pair1)
+                                index = last_5_row_kill_pairs.index(pair1)
+                                last_5_row_kill_pairs[index].clear() 
+                                break
+                        break
                 
             
-        # SITE_KILL
-        # Total_dmg
-        # Grenade_used
-        # MID_KILL
-        # POST_PLANT_KILL
-        # ALONE_KILL *
-        # Distance_to_nearest_teammate (timegate) *
-        # TIME_OF_KILL
-        # ALONE_DEATH *
-        # PRE_PLANT_KILL
-        # VIC_FREQ
-        # ATT_FREQ
-        # Distance_to_bombsite
-        # Distance_to_last_known
-        # Distance_traveled
+        # SITE_KILL 9
+                    
+        # Total_dmg 10
+        for player in array_player_vals:
+            if player[0] == row['att_id']:
+                player[10] = player[10] + row['hp_dmg']
+                break
+            
+        # Grenade_used 11
+        for player in array_player_vals:
+            if player[0] == row['att_id'] and row['wp_type'] == 'Grenade' and player[0] != last_row_id:
+                player[11] = player[11] + 1
+                break
+            
+        # MID_KILL 12
+            
+        # POST_PLANT_KILL 13 (part 1)
+        if len(kill_pairs) > 0:
+            for pair in kill_pairs:
+                if pair and row['is_bomb_planted'] == True and pair not in postplant_kills and pair not in preplant_kills:
+                    #print(kill_pairs)
+                    #print()
+                    postplant_kills.append(pair)
+                    
+        # ALONE_KILL *14 - check distance to nearst # of teammates and give a point if a certain distance away
+        # Distance_to_nearest_teammate (timegate)
+        # ALONE_DEATH *17
         
+        # PRE_PLANT_KILL 18 (part 1)
+        if len(kill_pairs) > 0:
+            for pair in kill_pairs:
+                if pair and row['is_bomb_planted'] == False and pair not in preplant_kills:
+                    #print(kill_pairs)
+                    #print()
+                    preplant_kills.append(pair)
+                
+        
+        # Distance_to_bombsite 21
+        # Distance_to_last_known 22
+        # Distance_traveled 23
+                    
+################################ CLEAN UP ################################
         #shift last 5 kill pairs 1
         for i in range(5):
             if i + 1 > 4:
@@ -197,22 +234,53 @@ def all_roles_in_round(df, file, rnd):
             else:
                 last_5_row_kill_pairs[i] = last_5_row_kill_pairs[i+1]
                 
-                
         new_dmg_pair_flag = 1
+        last_row_id = row['att_id']
+
+        
+######################### AFTER ROW LOOP PROCESSES #########################
+# check values we put in the arrays -- saves processing time/easier to do it here
+    for dead in kill_pairs:
+        for player in array_player_vals:
+            # VIC_FREQ 19
+            if dead and player[0] == dead[1]:
+                player[19] = player[19] + 1
+            # ATT_FREQ 20
+            if dead and player[0] == dead[0]:
+                player[20] = player[20] + 1
                 
-        print(last_5_row_kill_pairs)
-        print()
+ 
+    # PRE_PLANT_KILL 18 (part 2)
+    for pair in preplant_kills:
+        for player in array_player_vals:
+            if pair and player[0] == pair[0]:
+                player[18] = player[18] + 1
+                
+ 
+    # POST_PLANT_KILL 13 (part 2)
+    for pair in postplant_kills:
+        for player in array_player_vals:
+            if pair and player[0] == pair[0]:
+                player[13] = player[13] + 1
     
+
+    # TIME_OF_KILLS (in array) 16
+    for pair in kill_pairs:
+        for player in array_player_vals:
+            if pair and player[0] == pair[0]:
+                player[16].append(pair[3])
+                
+    #Total num of kills 24
+    #Track deaths 25
+                
+    #Can give credit to asists here
+    #If a pair is still in damage pair, then that player did damage didn't get kill               
+                
+    
+                
     print(*array_player_vals, sep='\n')
     
 all_roles_in_round(data, "003218553373129179487_1555113029.dem", 4) 
-    
-    
-    
-    
-    
-    
-    
     
     
     
