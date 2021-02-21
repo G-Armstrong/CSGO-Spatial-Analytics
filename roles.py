@@ -53,53 +53,58 @@ def all_roles_in_round(df, file, rnd):
     
     ct_list, t_list = find_team_ids(file)
     
-    array_player_vals = []
+    # array_player_vals = []
     
-    for x in ct_list:
-        array_player_vals.append([x])
+    # for x in ct_list:
+    #     array_player_vals.append([x])
         
-    for y in t_list:
-        array_player_vals.append([y])
+    # for y in t_list:
+    #     array_player_vals.append([y])
         
     
-    #add zeros
-    for  player in array_player_vals:
-        for i in range(25):
-            player.append(0)
-        player[16] = []
+    # #add zeros
+    # for  player in array_player_vals:
+    #     for i in range(25):
+    #         player.append(0)
+    #     player[16] = []
+    first_dmg_turn_counter = 20
+    first_dmg_award = [1,1,2,2,3,3,4,4,5,5]
+    first_dmg_index = len(first_dmg_award) - 1
     
-    first_dmg_counter = 20
-    value = 5
-    dup_ids_first = []
+    # value = 5
+    # dup_ids_first = []
     
-    last_row_id = 0
+    # last_row_id = 0
+    # dmg_pairs = []
+    # health_tracker = []
+    # kill_pairs = []
+    # last_5_row_kill_pairs = [[],[],[],[],[]]
+    # preplant_kills = []
+    # postplant_kills = []
     
+    # last_round_dmg_time = 0
     
-    ct_player_1 = []
-    ct_player_2 = []
-    ct_player_3 = []
-    ct_player_4 = []
-    ct_player_5 = []
-    
-    t_player_1 = []
-    t_player_2 = []
-    t_player_3 = []
-    t_player_4 = []
-    t_player_5 = []
-    
-    '''setup all players with id's and health'''
+    # new_dmg_pair_flag = 1
     
     
-    dmg_pairs = []
-    health_tracker = []
-    kill_pairs = []
-    last_5_row_kill_pairs = [[],[],[],[],[]]
-    preplant_kills = []
-    postplant_kills = []
+    #ID, Health, damage, kills, rifle, sniper, pistol, smg, grenade, preplant kill, postplant kill, fast_kill_rating (first_kill), time of kills, total kills, total deaths
+    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
+    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
+    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
+    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
+    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
     
-    last_round_dmg_time = 0
+    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
+    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
+    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
+    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
+    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
     
-    new_dmg_pair_flag = 1
+    all_players = [ct_player_1, ct_player_2, ct_player_3, ct_player_4, ct_player_5,
+                   t_player_1, t_player_2, t_player_3, t_player_4, t_player_5]
+        
+    
+    
 
 ############################### GAMES LOOP ###############################
     
@@ -110,9 +115,43 @@ def all_roles_in_round(df, file, rnd):
 
     
     for index, row in single_round.iterrows():
-        
-          '''when a player dies in row do calucations then'''
-          ''' pick 5=10 features to run throuhg kmeans first'''
+        '''when a player dies in row do calucations then'''
+        for victim in all_players:
+            if victim[0] == row['vic_id']:
+                victim[1] -= row['hp_dmg']
+                for attacker in all_players:
+                    if attacker[0] == row['att_id']:
+                        attacker[2] += row['hp_dmg']
+                        if victim[1] <= 0:
+                            attacker[3] += 1
+                            if row['wp_type'] == 'Rifle':
+                                attacker[4] += 1
+                            if row['wp_type'] == 'Sniper':
+                                attacker[5] += 1
+                            if row['wp_type'] == 'Pistol':
+                                attacker[6] += 1
+                            if row['wp_type'] == 'SMG':
+                                attacker[7] += 1
+                            if row['wp_type'] == 'Grenade':
+                                attacker[8] += 1
+                            if row['is_bomb_planted'] != True:
+                                attacker[9] += 1
+                            if row['is_bomb_planted'] == True:
+                                attacker[10] += 1
+                            if first_dmg_turn_counter > 0 and attacker[11] == 0 and first_dmg_index >= 0:
+                                attacker[11] = first_dmg_award[first_dmg_index]
+                                first_dmg_index -= 1
+                            attacker[12].append(row['seconds'])
+                            attacker[13] += 1
+                            victim[14] += 1
+        first_dmg_turn_counter -= 1
+                      
+    player_df = pd.DataFrame(all_players)
+    player_df.columns = ['ID','Health','damage','kills','rifle','sniper','pistol','smg','grenade','preplant kill','postplant kill','fast_kill_rating (first_kill)','time of kills','total kills','total deaths']
+    
+    pd.set_option("display.max_rows", None, "display.max_columns", None, 'expand_frame_repr', False)
+    player_df.style.set_properties(**{'text-align': 'center'})
+    print(player_df.head(10))
           
 #         print()
 #         print()
@@ -327,7 +366,7 @@ def all_roles_in_round(df, file, rnd):
                 
 #     print(*array_player_vals, sep='\n')
     
-# all_roles_in_round(data, "003218553373129179487_1555113029.dem", 4) 
+all_roles_in_round(data, "003218553373129179487_1555113029.dem", 4) 
     
     
     
