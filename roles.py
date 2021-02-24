@@ -87,18 +87,18 @@ def all_roles_in_round(df, file, rnd):
     # new_dmg_pair_flag = 1
     
     
-    #ID, Health, damage, kills, rifle, sniper, pistol, smg, grenade, preplant kill, postplant kill, fast_kill_rating (first_kill), time of kills, total kills, total deaths
-    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
-    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
-    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
-    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
-    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
+    #ID, Health, damage, kills, rifle, sniper, pistol, smg, grenade, preplant kill, postplant kill, fast_kill_rating (first_kill), time of kills, total kills, total deaths, avg kill time
+    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
+    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
+    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
+    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
+    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
     
-    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
-    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
-    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
-    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
-    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0]
+    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
+    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
+    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
+    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
+    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
     
     all_players = [ct_player_1, ct_player_2, ct_player_3, ct_player_4, ct_player_5,
                    t_player_1, t_player_2, t_player_3, t_player_4, t_player_5]
@@ -112,7 +112,8 @@ def all_roles_in_round(df, file, rnd):
 
 
 ############################### ROWS LOOP ###############################
-
+#Assists kills?
+#avg time between kills
     
     for index, row in single_round.iterrows():
         '''when a player dies in row do calucations then'''
@@ -145,13 +146,32 @@ def all_roles_in_round(df, file, rnd):
                             attacker[13] += 1
                             victim[14] += 1
         first_dmg_turn_counter -= 1
-                      
-    player_df = pd.DataFrame(all_players)
-    player_df.columns = ['ID','Health','damage','kills','rifle','sniper','pistol','smg','grenade','preplant kill','postplant kill','fast_kill_rating (first_kill)','time of kills','total kills','total deaths']
     
+
+    for player in all_players:
+        time_delta = 0
+        if player[12] and len(player[12]) > 1:
+            print(player[12])
+            for i in range(len(player[12])):
+                if (i + 1) < (len(player[12])):
+                    print(player[12][i+1], player[12][i])
+                    time_delta += player[12][i+1] - player[12][i]
+                    print(time_delta)
+                else:
+                    #will get more accurate each round and harder to change
+                    player[15] = time_delta/(len(player[12]) - 1)
+                    break
+        
+                
+    players_df = pd.DataFrame(all_players)
+    players_df.columns = ['ID','Health','damage','kills','rifle','sniper','pistol','smg','grenade','preplant kill','postplant kill','fast_kill_rating (first_kill)','time of kills','total kills','total deaths', 'avg kill time']
+
     pd.set_option("display.max_rows", None, "display.max_columns", None, 'expand_frame_repr', False)
-    player_df.style.set_properties(**{'text-align': 'center'})
-    print(player_df.head(10))
+    players_df.style.set_properties(**{'text-align': 'center'})
+    print(players_df.head(10))
+    
+    #save to csv
+    players_df.to_csv('players_df.csv', index = False, encoding='utf-8')
           
 #         print()
 #         print()
