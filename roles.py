@@ -27,6 +27,11 @@ with open('file_to_rounds.txt', 'rb') as handle:
 #dictionary
 file_to_rounds = pickle.loads(_input)
 
+#main df
+column_names = ['ID','Health','damage','kills','rifle','sniper','pistol','smg','grenade','preplant kill','postplant kill','fast_kill_rating (first_kill)','time of kills','total kills','total deaths', 'avg kill time', 'assists']
+main_df = pd.DataFrame(columns = column_names)
+
+
 #get all player ids
 def find_team_ids(file):
     list_of_ct_ids = []
@@ -46,13 +51,20 @@ def find_team_ids(file):
 
 
 # Make method to loop through single round to determine which player fills what role
-def all_roles_in_round(df, file, rnd): 
+def all_roles_in_round(df, file): 
     
 ############################### VARIABLES ###############################
-    single_round = data[(data['round'] == rnd) & (data['file'] == file)]
-    
     ct_list, t_list = find_team_ids(file)
-    
+    if len(ct_list) < 5:
+        print("CT LIST TOO SMALL:", len(ct_list))
+        print("Skipping")
+        return
+        
+    if len(t_list) < 5:
+        print("T LIST TOO SMALL:", len(t_list))
+        print("Skipping")
+        return
+        
     # array_player_vals = []
     
     # for x in ct_list:
@@ -67,9 +79,7 @@ def all_roles_in_round(df, file, rnd):
     #     for i in range(25):
     #         player.append(0)
     #     player[16] = []
-    first_dmg_turn_counter = 20
-    first_dmg_award = [1,1,2,2,3,3,4,4,5,5]
-    first_dmg_index = len(first_dmg_award) - 1
+    
     
     # value = 5
     # dup_ids_first = []
@@ -85,93 +95,140 @@ def all_roles_in_round(df, file, rnd):
     # last_round_dmg_time = 0
     
     # new_dmg_pair_flag = 1
+    ''' NOTES '''
+    #May need to do average for Fast kill rating
+    #Check if assists are right
+    #test flag check for testing single round and single game (easy)
+    #check id 2366 lol
     
+    ''' GAME VARIABLES '''
+    #ID, Health, damage, kills, rifle, sniper, pistol, smg, grenade, preplant kill, postplant kill, fast_kill_rating (first_kill), time of kills, total kills, total deaths, avg kill time, assists
+    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
+    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
+    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
+    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
+    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
     
-    #ID, Health, damage, kills, rifle, sniper, pistol, smg, grenade, preplant kill, postplant kill, fast_kill_rating (first_kill), time of kills, total kills, total deaths, avg kill time
-    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
-    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
-    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
-    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
-    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
-    
-    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
-    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
-    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
-    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
-    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0]
+    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
+    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
+    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
+    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
+    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
     
     all_players = [ct_player_1, ct_player_2, ct_player_3, ct_player_4, ct_player_5,
                    t_player_1, t_player_2, t_player_3, t_player_4, t_player_5]
         
     
+    ''' ROUNDS LOOP '''
     
+    single_game = data[(data['file'] == file)]
+    highest_round = single_game.loc[single_game['round'].idxmax()]
+    print("Running file", file,"with max round", highest_round['round'], "...")
+    for i in range(1, highest_round['round'] + 1):
+        
+        ''' ROUND VARIABLES '''
+        first_dmg_turn_counter = 20
+        first_dmg_award = [1,1,2,2,3,3,4,4,5,5]
+        first_dmg_index = len(first_dmg_award) - 1
+        assists = []
+        
+        ''' ROWS LOOP '''
+        print("Running round", i,"...")
+        single_round = data[(data['round'] == i) & (data['file'] == file)]
+        for index, row in single_round.iterrows():
+            '''when a player dies in row do calucations then'''
+            for victim in all_players:
+                if victim[0] == row['vic_id']:
+                    victim[1] -= row['hp_dmg']
+                    for attacker in all_players:
+                        if attacker[0] == row['att_id']:
+                            attacker[2] += row['hp_dmg']
+                            #if a attacker does damage give him an assist,
+                            if ([attacker[0], victim[0]]) not in assists:
+                                assists.append([attacker[0], victim[0]])
+                            if victim[1] <= 0:
+                                #remove assist from list when they kill
+                                assists.remove([attacker[0], victim[0]])
+                                attacker[3] += 1
+                                if row['wp_type'] == 'Rifle':
+                                    attacker[4] += 1
+                                if row['wp_type'] == 'Sniper':
+                                    attacker[5] += 1
+                                if row['wp_type'] == 'Pistol':
+                                    attacker[6] += 1
+                                if row['wp_type'] == 'SMG':
+                                    attacker[7] += 1
+                                if row['wp_type'] == 'Grenade':
+                                    attacker[8] += 1
+                                if row['is_bomb_planted'] != True:
+                                    attacker[9] += 1
+                                if row['is_bomb_planted'] == True:
+                                    attacker[10] += 1
+                                if first_dmg_turn_counter > 0 and attacker[11] == 0 and first_dmg_index >= 0:
+                                    attacker[11] = first_dmg_award[first_dmg_index]
+                                    first_dmg_index -= 1
+                                attacker[12].append(row['seconds'])
+                                attacker[13] += 1
+                                victim[14] += 1
 
-############################### GAMES LOOP ###############################
-    
-############################### ROUNDS LOOP ###############################
+            ''' POST ROUND CHECKS '''
+            for player in all_players:
+                time_delta = 0
+                #assists checks
+                if len(assists) > 0:
+                    for assist_pair in assists:
+                        if assist_pair[0] == player[0]:
+                            player[16] += 1
+                            assists.remove(assist_pair)
+                            
+                if player[12] and len(player[12]) > 1:
+                    for i in range(len(player[12])):
+                        if (i + 1) < (len(player[12])):
+                            time_delta += player[12][i+1] - player[12][i]
+                        else:
+                            #will get more accurate each round and harder to change
+                            player[15] = time_delta/(len(player[12]) - 1)
 
-
-############################### ROWS LOOP ###############################
-#Assists kills?
-#avg time between kills
-    
-    for index, row in single_round.iterrows():
-        '''when a player dies in row do calucations then'''
-        for victim in all_players:
-            if victim[0] == row['vic_id']:
-                victim[1] -= row['hp_dmg']
-                for attacker in all_players:
-                    if attacker[0] == row['att_id']:
-                        attacker[2] += row['hp_dmg']
-                        if victim[1] <= 0:
-                            attacker[3] += 1
-                            if row['wp_type'] == 'Rifle':
-                                attacker[4] += 1
-                            if row['wp_type'] == 'Sniper':
-                                attacker[5] += 1
-                            if row['wp_type'] == 'Pistol':
-                                attacker[6] += 1
-                            if row['wp_type'] == 'SMG':
-                                attacker[7] += 1
-                            if row['wp_type'] == 'Grenade':
-                                attacker[8] += 1
-                            if row['is_bomb_planted'] != True:
-                                attacker[9] += 1
-                            if row['is_bomb_planted'] == True:
-                                attacker[10] += 1
-                            if first_dmg_turn_counter > 0 and attacker[11] == 0 and first_dmg_index >= 0:
-                                attacker[11] = first_dmg_award[first_dmg_index]
-                                first_dmg_index -= 1
-                            attacker[12].append(row['seconds'])
-                            attacker[13] += 1
-                            victim[14] += 1
-        first_dmg_turn_counter -= 1
-    
-
-    for player in all_players:
-        time_delta = 0
-        if player[12] and len(player[12]) > 1:
-            print(player[12])
-            for i in range(len(player[12])):
-                if (i + 1) < (len(player[12])):
-                    print(player[12][i+1], player[12][i])
-                    time_delta += player[12][i+1] - player[12][i]
-                    print(time_delta)
-                else:
-                    #will get more accurate each round and harder to change
-                    player[15] = time_delta/(len(player[12]) - 1)
-                    break
+            ''' POST ROUND VARIABLE CHANGES '''
+            first_dmg_turn_counter -= 1
+                        
         
                 
     players_df = pd.DataFrame(all_players)
-    players_df.columns = ['ID','Health','damage','kills','rifle','sniper','pistol','smg','grenade','preplant kill','postplant kill','fast_kill_rating (first_kill)','time of kills','total kills','total deaths', 'avg kill time']
-
-    pd.set_option("display.max_rows", None, "display.max_columns", None, 'expand_frame_repr', False)
-    players_df.style.set_properties(**{'text-align': 'center'})
-    print(players_df.head(10))
+    players_df.columns = column_names
+    return players_df
     
-    #save to csv
-    players_df.to_csv('players_df.csv', index = False, encoding='utf-8')
+    
+all_files = data.file.unique()
+index = 0
+for f in all_files:
+    if index == 5:
+        break
+    round_df = all_roles_in_round(data, f)
+    print('--------------------------------------')
+    main_df = main_df.append(round_df, ignore_index = True)
+    index += 1
+
+main_df = main_df.drop(['time of kills', 'Health'], axis=1)
+pd.set_option("display.max_rows", None, "display.max_columns", None, 'expand_frame_repr', False)
+
+print(main_df)
+    
+#save to csv
+#main_df.to_csv('players_df.csv', index = False, encoding='utf-8')
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
           
 #         print()
 #         print()
@@ -386,7 +443,7 @@ def all_roles_in_round(df, file, rnd):
                 
 #     print(*array_player_vals, sep='\n')
     
-all_roles_in_round(data, "003218553373129179487_1555113029.dem", 4) 
+# all_roles_in_round(data, "003218553373129179487_1555113029.dem", 4) 
     
     
     

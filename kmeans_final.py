@@ -9,20 +9,26 @@ import seaborn as sns
 #get player_df from csv
 df = pd.read_csv('players_df.csv')
 
-#drop array column [12]
+#remove columns we don't want to be factoring into kmeans
+# features = df.drop(['time of kills', 'ID', 'Health'],axis=1)
+features = df.drop('ID',axis=1)
 
 #Do we need to normalize?
 scaler = preprocessing.MinMaxScaler()
-features_normal = scaler.fit_transform(df)
-print(pd.DataFrame(features_normal).describe())
+features_normal = scaler.fit_transform(features)
 
-# #clustering
-# kmeans = KMeans(n_clusters=4).fit(features_normal)
-# labels = pd.DataFrame(kmeans.labels_) #This is where the label output of the KMeans we just ran lives. Make it a dataframe so we can concatenate back to the original data
-# labeledColleges = pd.concat((features,labels),axis=1)
-# labeledColleges = labeledColleges.rename({0:'labels'},axis=1)
-# labeledColleges.head()
+# normalized_pd = pd.DataFrame(features_normal)
+# print(normalized_pd)
 
-# #visualization
-# sns.lmplot(x='Top10perc',y='S.F.Ratio',data=labeledColleges,hue='labels',fit_reg=False)
-# sns.pairplot(labeledColleges,hue='labels')
+#Clustering
+kmeans = KMeans(n_clusters=5).fit(features_normal)
+#This is where the label output of the KMeans we just ran lives. 
+#Make it a dataframe so we can concatenate back to the original data
+print(pd.DataFrame(kmeans.labels_))
+labels = pd.DataFrame(kmeans.labels_) 
+labeledRoles = pd.concat((features,labels),axis=1)
+labeledRoles = labeledRoles.rename({0:'labels'},axis=1)
+
+#visualization
+#sns.lmplot(x='total kills',y='total deaths',data=labeledRoles,hue='labels',fit_reg=False)
+sns.pairplot(labeledRoles,hue='labels')
