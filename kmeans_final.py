@@ -32,3 +32,10 @@ labeledRoles = labeledRoles.rename({0:'labels'},axis=1)
 #visualization
 sns.lmplot(x='total kills',y='total deaths',data=labeledRoles,hue='labels',fit_reg=False)
 #sns.pairplot(labeledRoles,hue='labels')
+
+
+
+
+
+
+

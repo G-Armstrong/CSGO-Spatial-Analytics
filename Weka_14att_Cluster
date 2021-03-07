@@ -1,0 +1,110 @@
+=== Run information ===
+
+Scheme:       weka.clusterers.EM -I 100 -N 5 -X 10 -max 5 -ll-cv 1.0E-6 -ll-iter 1.0E-6 -M 1.0E-6 -K 15 -num-slots 2 -S 100
+Relation:     players_df-weka.filters.unsupervised.attribute.Remove-R1
+Instances:    40
+Attributes:   14
+              damage
+              kills
+              rifle
+              sniper
+              pistol
+              smg
+              grenade
+              preplant kill
+              postplant kill
+              fast_kill_rating (first_kill)
+              total kills
+              total deaths
+              avg kill time
+              assists
+Test mode:    evaluate on training data
+
+
+=== Clustering model (full training set) ===
+
+
+EM
+==
+
+Number of clusters: 5
+Number of iterations performed: 1
+
+
+                                  Cluster
+Attribute                               0         1         2         3         4
+                                    (0.2)    (0.13)    (0.32)    (0.25)     (0.1)
+==================================================================================
+damage
+  mean                            953.2878 1437.4062  976.4409  461.2957 1151.0229
+  std. dev.                       318.0967  435.5302  231.7285   219.358   159.379
+
+kills
+  mean                              8.5815   17.9995    8.8754    3.8111   10.2778
+  std. dev.                         3.1506     2.608    1.7675    1.3325    1.9058
+
+rifle
+  mean                              2.9938    9.1994    6.3544    2.3086    7.4979
+  std. dev.                         2.1024    6.0133    2.9151    1.4877     0.865
+
+sniper
+  mean                              1.7455         7    1.4704    0.7959    0.2473
+  std. dev.                         2.5641    5.8989    2.2901    0.8714    0.4314
+
+pistol
+  mean                              0.7601    1.5998     0.754    0.0995    0.0437
+  std. dev.                         0.8211    2.7275    1.1194    0.2993    0.3584
+
+smg
+  mean                              2.6911    0.2002    0.0737    0.4081    1.5041
+  std. dev.                         1.0439    0.4004    0.2612    0.6713    1.4903
+
+grenade
+  mean                                   0         0    0.0026         0     0.985
+  std. dev.                         0.0007    0.3038    0.0506         0    0.1217
+
+preplant kill
+  mean                              7.5747   16.9993    7.1075    3.3137    9.2337
+  std. dev.                         2.6001    3.5218    2.1328    1.1998    2.6762
+
+postplant kill
+  mean                              1.0068    1.0001    1.7679    0.4975    1.0442
+  std. dev.                         0.6974    1.5492    1.4703    0.6701       1.3
+
+fast_kill_rating (first_kill)
+  mean                              4.0289    4.7999    3.6701    4.5919    4.0083
+  std. dev.                         0.7125    0.4001    1.1994    0.6713    1.0001
+
+total kills
+  mean                              8.5815   17.9995    8.8754    3.8111   10.2778
+  std. dev.                         3.1506     2.608    1.7675    1.3325    1.9058
+
+total deaths
+  mean                             10.7681    7.6003    9.5696    6.8264    9.0439
+  std. dev.                          2.843    3.0066    4.5275    2.8732     1.233
+
+avg kill time
+  mean                             292.679  107.1969  214.4733  360.3976  205.0124
+  std. dev.                       145.1114   29.3446   56.5915  190.9165   26.3035
+
+assists
+  mean                              6.1306    3.0004     6.092     3.398    5.9784
+  std. dev.                         2.7151    1.7892    2.7842    1.9034    1.0224
+
+
+
+Time taken to build model (full training data) : 0.04 seconds
+
+=== Model and evaluation on training set ===
+
+Clustered Instances
+
+0       8 ( 20%)
+1       5 ( 13%)
+2      12 ( 30%)
+3      11 ( 28%)
+4       4 ( 10%)
+
+
+Log likelihood: -29.14109
+

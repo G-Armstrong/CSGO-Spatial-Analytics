@@ -17,6 +17,8 @@ writer = Writer()
 #make empty df   
 data = pd.DataFrame()
 
+iterations = 50
+
 #gets copy of original data
 data = writer.get_data()
 
@@ -221,7 +223,7 @@ all_files = data.file.unique()
 index = 0
 
 for f in all_files:
-    if index == 5:
+    if index == iterations:
         break
     round_df = all_roles_in_round(data, f)
     print('--------------------------------------')
