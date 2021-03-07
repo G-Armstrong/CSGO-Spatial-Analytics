@@ -59,5 +59,6 @@
 ## TODO
 * ~~Pre and Postplants Heatmaps where both sides are victims in engagements~~
 * ~~Create simuation of single round 
+* Interpret clustering output and find the best algorithm to group player behavior
 
 
