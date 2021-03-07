@@ -48,6 +48,14 @@
 ## 2/8/2021
 * Began tracking player features and applied weights to each of these features to be used later for assigned player roles based on historical data 
 
+## 2/27/2021
+* Output visualization of sklearn clustering found on kmeans_final.py
+
+## 3/6/2021
+* Experimented with Weka to create a Classifier tree of 14 tracked attributes (ClassiferTree.PNG) and output mean and SD for k=5 clusters
+* Created AlgorithmComparison.py to compare the accuracy of various algorithms on training and testing data
+
+
 ## TODO
 * ~~Pre and Postplants Heatmaps where both sides are victims in engagements~~
 * ~~Create simuation of single round 
