@@ -25,7 +25,6 @@ dataset = dataset.drop('ID',axis=1)
 dataset.reset_index(drop=True, inplace=True)
 
 
-
 # validation dataset
 array = dataset.values
 X = array[:,0:10]

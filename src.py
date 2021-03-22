@@ -82,13 +82,14 @@ class Writer:
     
     
     def main(self):
-        mask = self.data[(self.data['bomb_site'] == 'A')]
-        
+        print("Creating Round File...")
+        mask=self.data
         
         #list of all unique files (games)
         fn = mask['file'].tolist() #[file1 (0), file2 (1)]
+
         fn = list(set(fn))
-        
+
         #make round number a list of lists and then refer to them by the index of the filenumber
         file_to_rounds = {} #{FN:RN}
         
@@ -108,5 +109,8 @@ class Writer:
         file = open('file_to_rounds.txt', 'wb')
         pickle.dump(file_to_rounds, file)
         file.close()
+        print("Done")
+        
+ 
         
        

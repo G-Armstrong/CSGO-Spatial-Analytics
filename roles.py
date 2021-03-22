@@ -17,14 +17,16 @@ writer = Writer()
 #make empty df   
 data = pd.DataFrame()
 
-iterations = 50
+iterations = 245
 
-#gets copy of original data
+#gets copy of original data\
+writer.main()
 data = writer.get_data()
 
 #reading
 with open('file_to_rounds.txt', 'rb') as handle:
     _input = handle.read()
+    
 
 #dictionary
 file_to_rounds = pickle.loads(_input)
@@ -53,6 +55,33 @@ def find_team_ids(file):
 
 
 # Make method to loop through single round to determine which player fills what role
+# create train set size vs accuracy graph
+
+
+
+#The General Making Choices Approach
+#####Features#####
+#Add distance to A bombsite 
+#Add distance to all teammates for T players
+#Map boxes around vital areas of the map for A post plant
+
+#####PreGame##### Making use of Clustering 
+
+#Finish clustering with new features, classify test set into clusters, make a new column for cluster
+#determine success and faiulure statistics for team comp matchups (Team Gamma vs Team Omega)
+#determine which individual team comp is the most winningest -
+#win percentage of team comp before and after switch
+#if matchup between team is bad, AI system could recommend different comp
+
+
+
+#####MidGame/Post-Plant#####
+
+#Within +-5 seconds of A site bomb plant determine where T players are playing regardless of the round outcome
+# Look at their team comp-> is it a succeessful team comp? Or do they lose bc of the wrong combination of players and match up. 
+#Do they play in the positions we think are supposed to succeed based off heat maps? Or do they succeed from new postions? How is the team spread spatially?
+    #We can extract spatial features of player sot one another and bombsite and perform statistics on what wins
+
 def all_roles_in_round(df, file): 
     
 ############################### VARIABLES ###############################
@@ -220,6 +249,7 @@ def all_roles_in_round(df, file):
     
     
 all_files = data.file.unique()
+
 index = 0
 
 for f in all_files:
