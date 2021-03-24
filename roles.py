@@ -223,16 +223,22 @@ def all_roles_in_round(df, file):
                                 
                                 #alone kill
                                 alone_kill = True
+                                distance_to_nearest_teammate = 99999
                                 for player in all_players:
-                                    if ((player[17] == attacker[17]) and (player[18] != "N/A") and (player[1] > 0)):
+                                    if ((player[17] == attacker[17]) and (player[18] != "N/A") and (player[1] > 0) and player[0] != attacker[0]):
                                         result = distance_between_points([player[19], player[20]], [attacker[19], attacker[20]])
+                                        if result < distance_to_nearest_teammate:
+                                            distance_to_nearest_teammate = result
                                         if result < 300:
                                             alone_kill = False
                                         
-                                    elif ((player[17] == attacker[17]) and (player[18] != "N/A") and (player[1] > 0)):
+                                    elif ((player[17] == attacker[17]) and (player[18] != "N/A") and (player[1] > 0) and player[0] != attacker[0]):
                                         result = distance_between_points([player[19], player[20]], [attacker[19], attacker[20]])
+                                        if result < distance_to_nearest_teammate:
+                                            distance_to_nearest_teammate = result
                                         if result < 300:
                                             alone_kill = False
+                                    print("Distance to nearest teammate:", distance_to_nearest_teammate)
                                             
                                 if alone_kill == True:
                                     attacker[21] += 1
