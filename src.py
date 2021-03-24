@@ -11,6 +11,24 @@ import matplotlib.pyplot as plt
 import os
 import pickle
 
+def pointx_to_resolutionx(xinput,startX=-3217,endX=1912,resX=1024):
+        sizeX=endX-startX
+        if startX < 0:
+            xinput += startX *(-1.0)
+        else:
+            xinput += startX
+        xoutput = float((xinput / abs(sizeX)) * resX);
+        return xoutput
+    
+def pointy_to_resolutiony(yinput,startY=-3401,endY=1682,resY=1024):
+    sizeY=endY-startY
+    if startY < 0:
+        yinput += startY *(-1.0)
+    else:
+        yinput += startY
+    youtput = float((yinput / abs(sizeY)) * resY);
+    return resY-youtput
+
 class Writer:
     def __init__(self):
         self.data = pd.read_csv('./input/mm_master_demos.csv')
@@ -18,6 +36,11 @@ class Writer:
         
         # Filter by map & type of rounds, we don't want eco rounds as those tend to be more aggressive
         self.data = self.data[(self.data.map == self.analyzed_map) & (self.data.round_type == 'NORMAL')]
+        
+        self.data['attacker_mapX'] = self.data['att_pos_x'].apply(pointx_to_resolutionx)
+        self.data['attacker_mapY'] = self.data['att_pos_y'].apply(pointy_to_resolutiony)
+        self.data['victim_mapX'] = self.data['vic_pos_x'].apply(pointx_to_resolutionx)
+        self.data['victim_mapY'] = self.data['vic_pos_y'].apply(pointy_to_resolutiony)
     
      # def total_data_entries(self):
      #     print('Total data Entries:' + len(self.data))
@@ -105,6 +128,8 @@ class Writer:
                 file_to_rounds[row['file']] = [(row['round'])]
         
         
+        #add attacker_map and victim_map
+
         #write file_to_rounds to file
         file = open('file_to_rounds.txt', 'wb')
         pickle.dump(file_to_rounds, file)

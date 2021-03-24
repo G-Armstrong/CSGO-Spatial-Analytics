@@ -29,6 +29,10 @@ sim_round_one = []
 #dictionary
 file_to_rounds = pickle.loads(_input)
 
+#[Bot Left x, Bot Left y, Top Right x, Top Right y]
+stairs_box = [530, 645, 553, 598]
+list_of_boxes = [stairs_box]
+
 def pointx_to_resolutionx(xinput,startX=-3217,endX=1912,resX=1024):
         sizeX=endX-startX
         if startX < 0:
@@ -145,15 +149,12 @@ def find_team_ids(file):
 #         if row['att_id'] in ct_list:
 #             plt.figure(figsize=(20,20))
         
-#             new_plt = plt.imshow(im)
-            
+#             new_plt = plt.imshow(im)           
 #             new_plt = plt.scatter(row['attacker_mapX'], row['attacker_mapY'],alpha=1, c = row['ct_color'])
             
 #         else:
-#             plt.figure(figsize=(20,20))
-        
-#             new_plt = plt.imshow(im)
-            
+#             plt.figure(figsize=(20,20))       
+#             new_plt = plt.imshow(im)           
 #             new_plt = plt.scatter(row['victim_mapX'], row['victim_mapY'],alpha=1,c='white')
             
 #given a dataframe of a round return maps on one side
@@ -169,31 +170,33 @@ def produce_maps_from_lists(single_round_df, ct_list, t_list):
     im = plt.imread('./input/de_mirage.png')
     counter = 1
     for index, row in single_round_copy.iterrows():
-        
         data = np.array([[row['attacker_mapX'], row['attacker_mapY']], [row['victim_mapX'], row['victim_mapY']]]) #array == [[att x/y],[vic x/y]]
         ct_att_color = [row['ct_color'], 'white']
         t_att_color = [row['t_color'], 'white']
         
-        x,y = data.T#turn array of just numbers into x/y pairs
+        x,y = data.T #turn array of just numbers into x/y pairs
+       
         if row['att_id'] in ct_list:
             plt.figure(figsize=(20,20))
             new_plt = plt.imshow(im)
             new_plt = plt.scatter(x, y, alpha=1, c = ct_att_color)
             
+            
+            if (stairs_box[0] < x[0] < stairs_box[2]) and (stairs_box[3] < y[0] < stairs_box[1]):
+                print("Attacker", row['att_id'], "in Stairs box")
+
+            
         else:
             plt.figure(figsize=(20,20))
             new_plt = plt.imshow(im)
             new_plt = plt.scatter(x, y, alpha=1, c = t_att_color)
+            
+            
+            if (stairs_box[0] < x[0] < stairs_box[2]) and (stairs_box[3] < y[0] < stairs_box[1]):
+                print("Vic in Stairs block")
+                print("Victim", row['vic_id'], "in Stairs box")
+            
         
-        print("Plot: ", counter)
-        print(row['seconds'])
-        print(row['is_bomb_planted'])
-        print("Damage inflicted by:", row['att_side'])
-        print(row['hitbox'])
-        print(row['hp_dmg'])
-        print(row['wp'])
-        print(row['wp_type'])    
-        print()
         counter = counter + 1
         
     
@@ -222,6 +225,23 @@ def produce_pairs(df, ct_list, t_list, file, rnd):
                  
     #print maps with new colors
     produce_maps_from_lists(single_round_df, ct_list, t_list)
+    
+
+# def draw_boxes_tester():
+#     im = plt.imread('./input/de_mirage.png')
+#     plt.figure(figsize=(20,20))
+#     new_plt = plt.imshow(im)
+#     new_plt = plt.scatter(555, 600, alpha=1, c = "red")
+#     new_plt = plt.scatter(530, 645, alpha=1, c = "blue")
+
+def draw_boxes (all_boxes, current_map):
+    im = plt.imread(current_map)
+    plt.figure(figsize=(20,20))
+    for box in list_of_boxes:
+        new_plt = plt.imshow(im)
+        new_plt = plt.scatter(box[0], box[1], alpha=1, c = "red")
+        new_plt = plt.scatter(box[2], box[3], alpha=1, c = "blue")
+        
 
 
 #get attacker and victim lists for a round
@@ -233,10 +253,10 @@ def produce_pairs(df, ct_list, t_list, file, rnd):
 ct_ids, t_ids = find_team_ids("003218553373129179487_1555113029.dem")
 
 #produce_maps_for_each_team(data, ct_ids,"003218553373129179487_1555113029.dem", 4)
-# produce_maps_for_each_team(data, t_ids,"003218553373129179487_1555113029.dem", 4)
+#produce_maps_for_each_team(data, t_ids,"003218553373129179487_1555113029.dem", 4)
 
 produce_pairs(data, ct_ids, t_ids,"003218553373129179487_1555113029.dem", 4)
-
+#draw_boxes(list_of_boxes, './input/de_mirage.png')
     
 
 

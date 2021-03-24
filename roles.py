@@ -17,7 +17,8 @@ writer = Writer()
 #make empty df   
 data = pd.DataFrame()
 
-iterations = 245
+#iterations = 245
+iterations = 5
 
 #gets copy of original data\
 writer.main()
@@ -32,7 +33,9 @@ with open('file_to_rounds.txt', 'rb') as handle:
 file_to_rounds = pickle.loads(_input)
 
 #main df
-column_names = ['ID','Health','damage','kills','rifle','sniper','pistol','smg','grenade','preplant kill','postplant kill','fast_kill_rating (first_kill)','time of kills','total kills','total deaths', 'avg kill time', 'assists']
+column_names = ['ID','Health','damage','kills','rifle','sniper','pistol','smg',
+                'grenade','preplant kill','postplant kill','fast_kill_rating (first_kill)',
+                'time of kills','total kills','total deaths', 'avg kill time', 'assists', 'team','positioning type', 'last x', 'last y', 'alone kills']
 main_df = pd.DataFrame(columns = column_names)
 
 
@@ -52,6 +55,16 @@ def find_team_ids(file):
                 list_of_t_ids.append(row['att_id'])
                 
     return list_of_ct_ids, list_of_t_ids
+
+def distance_between_points(P, Q):
+    
+    x1 = P[0]
+    x2 = Q[0]
+    y1 = P[1]
+    y2 = Q[1]
+    
+    result = ((((x2 - x1 )**2) + ((y2-y1)**2) )**0.5)
+    return result
 
 
 # Make method to loop through single round to determine which player fills what role
@@ -139,18 +152,20 @@ def all_roles_in_round(df, file):
     
     
     ''' GAME VARIABLES '''
-    #ID, Health, damage, kills, rifle, sniper, pistol, smg, grenade, preplant kill, postplant kill, fast_kill_rating (first_kill), time of kills, total kills, total deaths, avg kill time, assists
-    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
-    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
-    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
-    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
-    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
+    #ID, Health, damage, kills, rifle, sniper, pistol, smg, grenade, preplant kill, 
+    # postplant kill, fast_kill_rating (first_kill), time of kills, total kills, 
+    #total deaths, avg kill time, assists, 'team', positioning type (att or vic), last x (vic/att), last y(vic/att), alone kills
+    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0]
+    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0]
+    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0]
+    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0]
+    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0]
     
-    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
-    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
-    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
-    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
-    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0]
+    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0]
+    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0]
+    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0]
+    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0]
+    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0]
     
     
     
@@ -183,15 +198,45 @@ def all_roles_in_round(df, file):
             '''when a player dies in row do calucations then'''
             for victim in all_players:
                 if victim[0] == row['vic_id']:
+                    
+                    #Set postioning type == VIC
+                    victim[18] = "VIC"
+                    #Set last x and last y
+                    victim[19] = row['victim_mapX']
+                    victim[20] = row['victim_mapY']
+                    
                     victim[1] -= row['hp_dmg']
                     for attacker in all_players:
                         if attacker[0] == row['att_id']:
+                            
+                            #Set postioning type == ATT
+                            attacker[18] = "ATT"
+                            #Set last x and last y
+                            attacker[19] = row['attacker_mapX']
+                            attacker[20] = row['attacker_mapY']
+                            
                             attacker[2] += row['hp_dmg']
                             #if a attacker does damage give him an assist,
                             if ([attacker[0], victim[0]]) not in assists:
                                 assists.append([attacker[0], victim[0]])
                             if victim[1] <= 0:
                                 
+                                #alone kill
+                                alone_kill = True
+                                for player in all_players:
+                                    if ((player[17] == attacker[17]) and (player[18] != "N/A") and (player[1] > 0)):
+                                        result = distance_between_points([player[19], player[20]], [attacker[19], attacker[20]])
+                                        if result < 300:
+                                            alone_kill = False
+                                        
+                                    elif ((player[17] == attacker[17]) and (player[18] != "N/A") and (player[1] > 0)):
+                                        result = distance_between_points([player[19], player[20]], [attacker[19], attacker[20]])
+                                        if result < 300:
+                                            alone_kill = False
+                                            
+                                if alone_kill == True:
+                                    attacker[21] += 1
+
                                 #remove assist from list when they kill
                                 assists.remove([attacker[0], victim[0]])
                                 attacker[3] += 1
@@ -260,7 +305,7 @@ for f in all_files:
     main_df = main_df.append(round_df, ignore_index = True)
     index += 1
 
-main_df = main_df.drop(['time of kills', 'Health'], axis=1)
+main_df = main_df.drop(['time of kills', 'Health', 'team', 'positioning type', 'last x', 'last y'], axis=1)
 pd.set_option("display.max_rows", None, "display.max_columns", None, 'expand_frame_repr', False)
 
 print(main_df)
