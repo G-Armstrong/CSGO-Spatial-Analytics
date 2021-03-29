@@ -30,8 +30,13 @@ sim_round_one = []
 file_to_rounds = pickle.loads(_input)
 
 #[Bot Left x, Bot Left y, Top Right x, Top Right y]
-stairs_box = [530, 645, 553, 598]
-list_of_boxes = [stairs_box]
+stairs_box = [530, 645, 553, 598, "stairs"]
+tetris_box= [602, 659, 630, 620, "tetris"]
+catwalk_box = [0,0,0,0]
+
+list_of_boxes = [stairs_box, tetris_box, catwalk_box]
+mid_boxes = [catwalk_box]
+A_boxes = []
 
 def pointx_to_resolutionx(xinput,startX=-3217,endX=1912,resX=1024):
         sizeX=endX-startX
@@ -180,21 +185,22 @@ def produce_maps_from_lists(single_round_df, ct_list, t_list):
             plt.figure(figsize=(20,20))
             new_plt = plt.imshow(im)
             new_plt = plt.scatter(x, y, alpha=1, c = ct_att_color)
+            print("Attacker", x[0], y[0])
             
-            
-            if (stairs_box[0] < x[0] < stairs_box[2]) and (stairs_box[3] < y[0] < stairs_box[1]):
-                print("Attacker", row['att_id'], "in Stairs box")
+            for box in list_of_boxes:
+                if (box[0] < x[0] < box[2]) and (box[3] < y[0] < box[1]):
+                    print("Victim", row['vic_id'], "in", box[4],"box")
 
             
         else:
             plt.figure(figsize=(20,20))
             new_plt = plt.imshow(im)
             new_plt = plt.scatter(x, y, alpha=1, c = t_att_color)
+            print("Victim", x[0], y[0])
             
-            
-            if (stairs_box[0] < x[0] < stairs_box[2]) and (stairs_box[3] < y[0] < stairs_box[1]):
-                print("Vic in Stairs block")
-                print("Victim", row['vic_id'], "in Stairs box")
+            for box in list_of_boxes:
+                if (box[0] < x[0] < box[2]) and (box[3] < y[0] < box[1]):
+                    print("Victim", row['vic_id'], "in", box[4],"box")
             
         
         counter = counter + 1
@@ -227,12 +233,12 @@ def produce_pairs(df, ct_list, t_list, file, rnd):
     produce_maps_from_lists(single_round_df, ct_list, t_list)
     
 
-# def draw_boxes_tester():
-#     im = plt.imread('./input/de_mirage.png')
-#     plt.figure(figsize=(20,20))
-#     new_plt = plt.imshow(im)
-#     new_plt = plt.scatter(555, 600, alpha=1, c = "red")
-#     new_plt = plt.scatter(530, 645, alpha=1, c = "blue")
+def draw_boxes_tester():
+    im = plt.imread('./input/de_mirage.png')
+    plt.figure(figsize=(20,20))
+    new_plt = plt.imshow(im)
+    new_plt = plt.scatter(602, 659, alpha=1, c = "red", marker="+")
+    new_plt = plt.scatter(630, 620, alpha=1, c = "blue", marker="+")
 
 def draw_boxes (all_boxes, current_map):
     im = plt.imread(current_map)
@@ -255,8 +261,14 @@ ct_ids, t_ids = find_team_ids("003218553373129179487_1555113029.dem")
 #produce_maps_for_each_team(data, ct_ids,"003218553373129179487_1555113029.dem", 4)
 #produce_maps_for_each_team(data, t_ids,"003218553373129179487_1555113029.dem", 4)
 
+
+
+
+''' Use These '''
 produce_pairs(data, ct_ids, t_ids,"003218553373129179487_1555113029.dem", 4)
-#draw_boxes(list_of_boxes, './input/de_mirage.png')
+
+#draw_boxes_tester()
+draw_boxes(list_of_boxes, './input/de_mirage.png')
     
 
 
