@@ -30,12 +30,35 @@ sim_round_one = []
 file_to_rounds = pickle.loads(_input)
 
 #[Bot Left x, Bot Left y, Top Right x, Top Right y]
-stairs_box = [530, 645, 553, 598, "stairs"]
-tetris_box= [602, 659, 630, 620, "tetris"]
-catwalk_box = [0,0,0,0]
 
-list_of_boxes = [stairs_box, tetris_box, catwalk_box]
-mid_boxes = [catwalk_box]
+#MID
+catwalk_box = [466, 442, 673, 390,"catwalk"]
+topmid_box = [675, 532, 755, 370, "topmid"]
+chair_box = [570, 536, 675, 500,"chair"]
+midlane_box = [463, 500, 680, 452, "midlane"]
+underpass_box=[435, 508, 463, 452, "underpass"]
+window_box = [395, 500, 427, 432,"window"]
+
+
+#A-SITE
+stairs_box = [538, 671, 565, 600, "stairs"]
+tetris_box= [602, 659, 630, 620, "tetris"]
+sandwhich_box=[568, 671, 601, 644, "sandwhich"]
+A_site_box=[485, 818, 585, 755, "A-site"]
+firebox_box=[589, 826, 630, 790, "firebox"]
+jungle_box=[390, 650, 465, 585, "jungle"]
+connector_box=[482, 600, 547, 505, "connector"]
+opening_box=[465, 671, 537, 605, "opening"]
+A_main_box=[631, 690, 686, 622, "A-main"]
+T_ramp_box=[690, 690, 750, 622, "T-ramp"]
+hell_box=[631, 790, 689, 691, "hell"]
+palace_box=[645, 825, 865, 788, "palace"]
+pillars_box=[698, 787, 865, 732, "pillars"]
+ticket_box=[455, 875, 484, 785, "ticket"]
+CT_ramp_box=[350, 875, 454, 780, "CT-ramp"]
+
+list_of_boxes = [stairs_box, tetris_box, catwalk_box, topmid_box, chair_box, midlane_box, underpass_box, window_box]
+mid_boxes = [catwalk_box, topmid_box, chair_box, midlane_box, underpass_box, window_box]
 A_boxes = []
 
 def pointx_to_resolutionx(xinput,startX=-3217,endX=1912,resX=1024):
@@ -232,13 +255,13 @@ def produce_pairs(df, ct_list, t_list, file, rnd):
     #print maps with new colors
     produce_maps_from_lists(single_round_df, ct_list, t_list)
     
-
+350, 875, 454, 780
 def draw_boxes_tester():
     im = plt.imread('./input/de_mirage.png')
     plt.figure(figsize=(20,20))
     new_plt = plt.imshow(im)
-    new_plt = plt.scatter(602, 659, alpha=1, c = "red", marker="+")
-    new_plt = plt.scatter(630, 620, alpha=1, c = "blue", marker="+")
+    new_plt = plt.scatter(350, 875, alpha=1, c = "red", marker="+")
+    new_plt = plt.scatter(454, 783, alpha=1, c = "blue", marker="+")
 
 def draw_boxes (all_boxes, current_map):
     im = plt.imread(current_map)
@@ -265,10 +288,10 @@ ct_ids, t_ids = find_team_ids("003218553373129179487_1555113029.dem")
 
 
 ''' Use These '''
-produce_pairs(data, ct_ids, t_ids,"003218553373129179487_1555113029.dem", 4)
+#produce_pairs(data, ct_ids, t_ids,"003218553373129179487_1555113029.dem", 4)
 
-#draw_boxes_tester()
-draw_boxes(list_of_boxes, './input/de_mirage.png')
+draw_boxes_tester()
+#draw_boxes(list_of_boxes, './input/de_mirage.png')
     
 
 
