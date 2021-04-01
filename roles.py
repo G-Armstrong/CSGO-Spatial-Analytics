@@ -24,8 +24,11 @@ SMG_kill
 SHOTGUN_kill
 MACHINEGUN_kill        
 TRADE_KILL
-SITE_KILL
-MID_KILL                            
+SITE_KILL  --
+              \
+               - Check A_boxes and mid_boxes to determin if kills happen here          
+              /
+MID_KILL   --                          
 ALONE_DEATH
 Distance_to_bombsite
 Distance_to_last_known
@@ -44,6 +47,9 @@ Determine which individual team comp is the most winningest -
 Win percentage of team comp before and after switch
     - How does 11111 do on T vs CT?
 If matchup between team is bad, AI system could recommend different comp
+
+Do individual players occupy different clusters?
+Check if individual players occur in different games?  
 
 
 
