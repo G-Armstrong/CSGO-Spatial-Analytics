@@ -214,7 +214,7 @@ def produce_maps_from_lists(single_round_df, ct_list, t_list):
             
             for box in list_of_boxes:
                 if (box[0] < x[0] < box[2]) and (box[3] < y[0] < box[1]):
-                    print("Victim", row['vic_id'], "in", box[4],"box")
+                    print("Attacker", row['vic_id'], "in", box[4],"box")
 
             
         else:
@@ -292,7 +292,7 @@ ct_ids, t_ids = find_team_ids("003218553373129179487_1555113029.dem")
 ''' Use These '''
 #produce_pairs(data, ct_ids, t_ids,"003218553373129179487_1555113029.dem", 4)
 
-draw_boxes_tester()
+#draw_boxes_tester()
 #draw_boxes(A_boxes, './input/de_mirage.png')
     
 

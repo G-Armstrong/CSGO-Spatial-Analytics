@@ -8,11 +8,10 @@ create train set size vs accuracy graph
 The General Making Choices Approach
 
 ####Raymond To-Do####
-Add distance to A bombsite 
+Add Avg distance to A bombsite -- Done
 Add mid kill
 Add columns for each box
-Move box code over from sim.py
-Add avg distance to all teammates for T players?
+Move box code over from sim.py -- don't need can just import
 
 ####Grant To-Do####
 Map boxes around vital areas of the map for A post plant
@@ -71,12 +70,11 @@ import matplotlib.pyplot as plt
 import os
 import pickle
 from src import Writer
+import sim as sim
 writer = Writer()
-
 
 #make empty df   
 data = pd.DataFrame()
-
 #iterations = 245
 iterations = 5
 
@@ -95,7 +93,11 @@ file_to_rounds = pickle.loads(_input)
 #main df
 column_names = ['ID','Health','damage','kills','rifle','sniper','pistol','smg',
                 'grenade','preplant kill','postplant kill','fast_kill_rating (first_kill)',
-                'time of kills','total kills','total deaths', 'avg kill time', 'assists', 'team','positioning type', 'last x', 'last y', 'alone kills']
+                'time of kills','total kills','total deaths', 'avg kill time', 
+                'assists', 'team','positioning type', 'last x', 'last y', 
+                'alone kills', 'distance to A bomb (on kill list)', 'Avg Distance to A bomb (on kill)',
+                'times in catwalk_box', 'times in topmid_box', 'times in chair_box', 'times in midlane_box', 'times in underpass_box', 'times in window_box']
+
 main_df = pd.DataFrame(columns = column_names)
 
 
@@ -143,60 +145,28 @@ def all_roles_in_round(df, file):
         print("T LIST TOO SMALL:", len(t_list))
         print("Skipping")
         return
-        
-    # array_player_vals = []
-    
-    # for x in ct_list:
-    #     array_player_vals.append([x])
-        
-    # for y in t_list:
-    #     array_player_vals.append([y])
-        
-    
-    # #add zeros
-    # for  player in array_player_vals:
-    #     for i in range(25):
-    #         player.append(0)
-    #     player[16] = []
-    
-    
-    # value = 5
-    # dup_ids_first = []
-    
-    # last_row_id = 0
-    # dmg_pairs = []
-    # health_tracker = []
-    # kill_pairs = []
-    # last_5_row_kill_pairs = [[],[],[],[],[]]
-    # preplant_kills = []
-    # postplant_kills = []
-    
-    # last_round_dmg_time = 0
-    
-    # new_dmg_pair_flag = 1
-    ''' NOTES '''
-    #May need to do average for Fast kill rating
-    #test flag check for testing single round and single game (easy)
-    #check id 2366 lol
-    #check for tks
    
     
     
     ''' GAME VARIABLES '''
     #ID, Health, damage, kills, rifle, sniper, pistol, smg, grenade, preplant kill, 
     # postplant kill, fast_kill_rating (first_kill), time of kills, total kills, 
-    #total deaths, avg kill time, assists, 'team', positioning type (att or vic), last x (vic/att), last y(vic/att), alone kills
-    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0]
-    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0]
-    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0]
-    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0]
-    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0]
+    #total deaths, avg kill time, assists, 'team', positioning type (att or vic), 
+    # last x (vic/att), last y(vic/att), alone kills, 
+    # distance to A bomb (on kill list), Avg Distance to A bomb (on kills)
+    #'times in catwalk_box', 'times in topmid_box', 'times in chair_box', 'times in midlane_box', 'times in underpass_box', 'times in window_box' (29)
     
-    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0]
-    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0]
-    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0]
-    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0]
-    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0]
+    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    
+    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
     
     
     
@@ -303,6 +273,37 @@ def all_roles_in_round(df, file):
                         attacker[13] += 1
                         victim[14] += 1
                         
+                        #Append distance to A bomb on kill
+                        attacker[22].append(distance_between_points([attacker[19], attacker[20]], sim.CenterA))
+                        
+                        #mid boxes check (attacker only)
+                        if row['att_id'] == attacker[0]:
+                            pos_data = np.array([[row['attacker_mapX'], row['attacker_mapY']], [row['victim_mapX'], row['victim_mapY']]])
+                            x, y = pos_data.T
+                            index_counter = 0
+                            for mid_box in sim.mid_boxes:
+                                if (mid_box[0] < x[0] < mid_box[2]) and (mid_box[3] < y[0] < mid_box[1]):
+                                    print("Attacker", row['att_id'], "in", mid_box[4],"box")
+                                    print(index_counter)
+                                    if index_counter == 0:
+                                        attacker[24] += 1
+                                        
+                                    elif index_counter == 1:
+                                        attacker[25] += 1
+                                        
+                                    elif index_counter == 2:
+                                        attacker[26] += 1
+                                        
+                                    elif index_counter == 3:
+                                        attacker[27] += 1
+                                        
+                                    elif index_counter == 4:
+                                        attacker[28] += 1
+                                        
+                                    else:
+                                        attacker[29] += 1                                        
+                                index_counter += 1
+                        
                         
 
         ''' POST ROUND CHECKS '''
@@ -318,7 +319,8 @@ def all_roles_in_round(df, file):
                     if assist_pair[0] == player[0]:
                         player[16] += 1
                         assists.remove(assist_pair)
-                        
+            
+            #average time of kills
             if player[12] and len(player[12]) > 1:
                 for i in range(len(player[12])):
                     if (i + 1) < (len(player[12])):
@@ -326,6 +328,15 @@ def all_roles_in_round(df, file):
                     else:
                         #will get more accurate each round and harder to change
                         player[15] = time_delta/(len(player[12]) - 1)
+                        
+            #average of distance to A bomb kills                        
+            if player[22] and len(player[22]) > 1:
+                for i in range(len(player[22])):
+                    if (i + 1) < (len(player[22])):
+                        time_delta += player[22][i+1] - player[22][i]
+                    else:
+                        #will get more accurate each round and harder to change
+                        player[23] = time_delta/(len(player[22]) - 1)
 
             ''' POST ROUND VARIABLE CHANGES '''
             first_dmg_turn_counter -= 1
@@ -349,10 +360,11 @@ for f in all_files:
     main_df = main_df.append(round_df, ignore_index = True)
     index += 1
 
-main_df = main_df.drop(['time of kills', 'Health', 'team', 'positioning type', 'last x', 'last y'], axis=1)
+main_df = main_df.drop(['time of kills', 'Health', 'team', 'positioning type', 'last x', 'last y', 'distance to A bomb (on kill list)'], axis=1)
 pd.set_option("display.max_rows", None, "display.max_columns", None, 'expand_frame_repr', False)
 
-print(main_df)
+
+print(main_df.head())
     
 #save to csv
 main_df.to_csv('players_df.csv', index = False, encoding='utf-8')
