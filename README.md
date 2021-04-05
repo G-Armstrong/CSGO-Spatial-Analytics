@@ -5,9 +5,11 @@
 ## Intro/Descriptions
 
 ## Folders & Files
-* /Heatmaps: "explain what is happening generally"
-* src.py: "..."
-* reader.py: "..."
+* src.py: Brings in data, sorts data, and filters for non-eco rounds
+* reader.py: Produces density map of pre and post A plant for entire data
+* sim.py: simulates a round with attackers and victims color coded for each side (used for testing boxes)
+* roles.py: main code for feature handling
+* kmeans_final: code for determining clusters (AI stuff)
 
 ## 11/10/2020
 * Intial coding start date
@@ -55,10 +57,21 @@
 * Experimented with Weka to create a Classifier tree of 14 tracked attributes (ClassiferTree.PNG) and output mean and SD for k=5 clusters
 * Created AlgorithmComparison.py to compare the accuracy of various algorithms on training and testing data
 
+## 4/4/2021
+* Added avg distance to A site for all players
+* Tallied if a player got a kill in a mid box (see sim.py for mid boxes locations)
+* Cleaned code in roles.py and sim.py.
+
 
 ## TODO
-* ~~Pre and Postplants Heatmaps where both sides are victims in engagements~~
-* ~~Create simuation of single round 
+* <s>Pre and Postplants Heatmaps where both sides are victims in engagements</s>
+* <s>Create simuation of single round </s> 
+* <s> Add Avg distance to A bombsite </s>
+* <s> Map boxes around vital areas of the map for A post plant </s>
 * Interpret clustering output and find the best algorithm to group player behavior
+* Apply statistics once clustering interpretion is finished
+* Add columns for each box
+* Continue to add features and clean code
+
 
 
