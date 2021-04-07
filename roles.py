@@ -8,31 +8,17 @@ create train set size vs accuracy graph
 The General Making Choices Approach
 
 ####Raymond To-Do####
-Add Avg distance to A bombsite -- Done
-Add mid kill
-Add columns for each box
-Move box code over from sim.py -- don't need can just import
+Add columns for A boxes
+TRADE_KILL                       
+ALONE_DEATH
+Distance_traveled
 
 ####Grant To-Do####
-Map boxes around vital areas of the map for A post plant
-Get A x/y
-Get mid x/y
-
-####Features to add####
-SMG_kill
-SHOTGUN_kill
-MACHINEGUN_kill        
-TRADE_KILL
 SITE_KILL  --
               \
                - Check A_boxes and mid_boxes to determin if kills happen here          
               /
-MID_KILL   --                          
-ALONE_DEATH
-Distance_to_bombsite
-Distance_to_last_known
-Distance_traveled
-TIME_OF_KILLS
+MID_KILL   --   
 
 
 ####PreGame##### Making use of Clustering 
@@ -75,8 +61,9 @@ writer = Writer()
 
 #make empty df   
 data = pd.DataFrame()
+
 #iterations = 245
-iterations = 5
+iterations = 245
 
 #gets copy of original data\
 writer.main()
@@ -99,7 +86,6 @@ column_names = ['ID','Health','damage','kills','rifle','sniper','pistol','smg',
                 'times in catwalk_box', 'times in topmid_box', 'times in chair_box', 'times in midlane_box', 'times in underpass_box', 'times in window_box']
 
 main_df = pd.DataFrame(columns = column_names)
-
 
 #get all player ids
 def find_team_ids(file):
@@ -360,7 +346,7 @@ for f in all_files:
     main_df = main_df.append(round_df, ignore_index = True)
     index += 1
 
-main_df = main_df.drop(['time of kills', 'Health', 'team', 'positioning type', 'last x', 'last y', 'distance to A bomb (on kill list)'], axis=1)
+main_df = main_df.drop(['ID', 'time of kills', 'Health', 'team', 'positioning type', 'last x', 'last y', 'distance to A bomb (on kill list)'], axis=1)
 pd.set_option("display.max_rows", None, "display.max_columns", None, 'expand_frame_repr', False)
 
 

@@ -12,16 +12,18 @@ from sklearn.model_selection import train_test_split
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
-from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
 from sklearn.naive_bayes import *
 
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.naive_bayes import GaussianNB
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.cluster import KMeans
+from scipy.cluster import hierarchy
+
 # Load dataset
 dataset = pd.read_csv('players_df.csv', index_col=False)
-dataset = dataset.drop('ID',axis=1)
 dataset.reset_index(drop=True, inplace=True)
 
 
@@ -43,6 +45,7 @@ models.append(('BNB', BernoulliNB()))
 #models.append(('CatNB', CategoricalNB()))
 models.append(('CompNB', ComplementNB()))
 models.append(('MultiNB', MultinomialNB()))
+models.append(('KMeans', KMeans()))
 
 # evaluate each model in turn
 results = []
