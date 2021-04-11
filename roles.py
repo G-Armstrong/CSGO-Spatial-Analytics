@@ -83,7 +83,10 @@ column_names = ['ID','Health','damage','kills','rifle','sniper','pistol','smg',
                 'time of kills','total kills','total deaths', 'avg kill time', 
                 'assists', 'team','positioning type', 'last x', 'last y', 
                 'alone kills', 'distance to A bomb (on kill list)', 'Avg Distance to A bomb (on kill)',
-                'times in catwalk_box', 'times in topmid_box', 'times in chair_box', 'times in midlane_box', 'times in underpass_box', 'times in window_box']
+                'times in catwalk_box', 'times in topmid_box', 'times in chair_box', 'times in midlane_box', 'times in underpass_box', 'times in window_box',\
+                'times in stairs_box', 'times in tetris_box', 'times in sandwhich_box', 'times in Asite_box', 'times in firebox_box', 'times in jungle_box', 'times in connector_box',
+                'times in opening_box', 'times in opening2_box', 'times in A_main_box', 'times in T_ramp_box', 'times in hell_box', 'times in palace_box', 'times in pillars_box', 
+                'times in ticket_box', 'times in CT_ramp_box']
 
 main_df = pd.DataFrame(columns = column_names)
 
@@ -140,19 +143,22 @@ def all_roles_in_round(df, file):
     #total deaths, avg kill time, assists, 'team', positioning type (att or vic), 
     # last x (vic/att), last y(vic/att), alone kills, 
     # distance to A bomb (on kill list), Avg Distance to A bomb (on kills)
-    #'times in catwalk_box', 'times in topmid_box', 'times in chair_box', 'times in midlane_box', 'times in underpass_box', 'times in window_box' (29)
+    #'times in catwalk_box', 'times in topmid_box', 'times in chair_box', 'times in midlane_box', 'times in underpass_box', 'times in window_box'(29), 
+    #'times in stairs_box', 'times in tetris_box', 'times in sandwhich_box', 'times in Asite_box', 'times in firebox_box', 'times in jungle_box', 'times in connector_box',
+    # 'times in opening_box', 'times in opening2_box', 'times in A_main_box', 'times in T_ramp_box', 'times in hell_box', 'times in palace_box', 'times in pillars_box', 
+    # 'times in ticket_box', 'times in CT_ramp_box' (45),
     
-    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
-    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
-    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
-    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
-    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
-    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
-    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
-    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
-    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
-    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0]
+    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
     
     
@@ -262,14 +268,14 @@ def all_roles_in_round(df, file):
                         #Append distance to A bomb on kill
                         attacker[22].append(distance_between_points([attacker[19], attacker[20]], sim.CenterA))
                         
-                        #mid boxes check (attacker only)
+                        #mid boxes and A_site boxes check (attacker only)
                         if row['att_id'] == attacker[0]:
                             pos_data = np.array([[row['attacker_mapX'], row['attacker_mapY']], [row['victim_mapX'], row['victim_mapY']]])
                             x, y = pos_data.T
                             index_counter = 0
-                            for mid_box in sim.mid_boxes:
-                                if (mid_box[0] < x[0] < mid_box[2]) and (mid_box[3] < y[0] < mid_box[1]):
-                                    print("Attacker", row['att_id'], "in", mid_box[4],"box")
+                            for box in sim.list_of_boxes:
+                                if (box[0] < x[0] < box[2]) and (box[3] < y[0] < box[1]):
+                                    print("Attacker", row['att_id'], "in", box[4],"box")
                                     print(index_counter)
                                     if index_counter == 0:
                                         attacker[24] += 1
@@ -286,8 +292,56 @@ def all_roles_in_round(df, file):
                                     elif index_counter == 4:
                                         attacker[28] += 1
                                         
+                                    elif index_counter == 5:
+                                        attacker[29] += 1    
+                                        
+                                    elif index_counter == 6:
+                                        attacker[30] += 1
+                                        
+                                    elif index_counter == 7:
+                                        attacker[31] += 1
+                                        
+                                    elif index_counter == 8:
+                                        attacker[32] += 1
+                                        
+                                    elif index_counter == 9:
+                                        attacker[33] += 1
+                                        
+                                    elif index_counter == 10:
+                                        attacker[34] += 1
+                                    
+                                    elif index_counter == 11:
+                                        attacker[35] += 1
+                                        
+                                    elif index_counter == 12:
+                                        attacker[36] += 1
+                                        
+                                    elif index_counter == 13:
+                                        attacker[37] += 1
+                                        
+                                    elif index_counter == 14:
+                                        attacker[38] += 1
+                                        
+                                    elif index_counter == 15:
+                                        attacker[39] += 1
+                                    
+                                    elif index_counter == 16:
+                                        attacker[40] += 1
+                                        
+                                    elif index_counter == 17:
+                                        attacker[41] += 1
+                                        
+                                    elif index_counter == 18:
+                                        attacker[42] += 1
+                                        
+                                    elif index_counter == 19:
+                                        attacker[43] += 1
+                                        
+                                    elif index_counter == 20:
+                                        attacker[44] += 1
+                                    
                                     else:
-                                        attacker[29] += 1                                        
+                                        attacker[45] += 1
                                 index_counter += 1
                         
                         
