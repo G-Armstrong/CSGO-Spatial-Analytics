@@ -63,9 +63,16 @@
 * Cleaned code in roles.py and sim.py.
 
 ## 4/6/2021
+* Added A_site box checks
+* Statistics are now collectable on where certain types of players (obtained from clustering) get kills 
+* Since the focus will be on A-bombsite attacks, pre and post plant recommendations can be made to players based on statistical analysis
+* of successful positions
+
+## 4/10/2021
 * Ran rough PCA and KMeans analysis in kmeans_final.py
 * SHOTGUN_kill, MACHINEGUN_kill  These two features will be removed since these weapons are unlikely to appear in a NORMAL buy round 
 * Planned out coding of remaining features. Do trade-kill last since it is time dependent and annoying to code  
+
 
 ## TODO
 * <s>Pre and Postplants Heatmaps where both sides are victims in engagements</s>
