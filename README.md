@@ -80,7 +80,7 @@
 
 ## 4/16/2021
 * Fixed average distance to A bomb kill bug (abs())
-* Added total_distance_travel feature which considers time of kills, damage, and deaths in total caluction
+* Added total_distance_travel feature which considers time of kills, damage, and deaths in total calculation
 * General unneccessary code removal
 
 ## TODO
