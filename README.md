@@ -75,8 +75,13 @@
 
 ## 4/15/2021
 * Added alone_death feature
-* Noticed bug in average kill time where some values are negative
+* Noticed bug in average distance to A bomb kill where some values are negative
 * Started coding distance_traveled feature
+
+##4/16/2021
+* Fixed average distance to A bomb kill bug (abs())
+* Added total_distance_travel feature which considers time of kills, damage, and deaths in total caluction
+* General unneccessary code removal
 
 ## TODO
 * <s>Pre and Postplants Heatmaps where both sides are victims in engagements</s>
