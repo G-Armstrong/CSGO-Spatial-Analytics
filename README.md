@@ -73,6 +73,10 @@
 * SHOTGUN_kill, MACHINEGUN_kill  These two features will be removed since these weapons are unlikely to appear in a NORMAL buy round 
 * Planned out coding of remaining features. Do trade-kill last since it is time dependent and annoying to code  
 
+## 4/15/2021
+* Added alone_death feature
+* Noticed bug in average kill time where some values are negative
+* Started coding distance_traveled feature
 
 ## TODO
 * <s>Pre and Postplants Heatmaps where both sides are victims in engagements</s>

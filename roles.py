@@ -8,18 +8,12 @@ create train set size vs accuracy graph
 The General Making Choices Approach
 
 ####Raymond To-Do####
-Add columns for A boxes
 TRADE_KILL                       
-ALONE_DEATH
+
 Distance_traveled
 
 ####Grant To-Do####
-SITE_KILL  --
-              \
-               - Check A_boxes and mid_boxes to determin if kills happen here          
-              /
-MID_KILL   --   
-
+ALONE_DEATH
 
 ####PreGame##### Making use of Clustering 
 
@@ -86,7 +80,7 @@ column_names = ['ID','Health','damage','kills','rifle','sniper','pistol','smg',
                 'times in catwalk_box', 'times in topmid_box', 'times in chair_box', 'times in midlane_box', 'times in underpass_box', 'times in window_box',\
                 'times in stairs_box', 'times in tetris_box', 'times in sandwhich_box', 'times in Asite_box', 'times in firebox_box', 'times in jungle_box', 'times in connector_box',
                 'times in opening_box', 'times in opening2_box', 'times in A_main_box', 'times in T_ramp_box', 'times in hell_box', 'times in palace_box', 'times in pillars_box', 
-                'times in ticket_box', 'times in CT_ramp_box']
+                'times in ticket_box', 'times in CT_ramp_box', 'alone_death']
 
 main_df = pd.DataFrame(columns = column_names)
 
@@ -146,19 +140,19 @@ def all_roles_in_round(df, file):
     #'times in catwalk_box', 'times in topmid_box', 'times in chair_box', 'times in midlane_box', 'times in underpass_box', 'times in window_box'(29), 
     #'times in stairs_box', 'times in tetris_box', 'times in sandwhich_box', 'times in Asite_box', 'times in firebox_box', 'times in jungle_box', 'times in connector_box',
     # 'times in opening_box', 'times in opening2_box', 'times in A_main_box', 'times in T_ramp_box', 'times in hell_box', 'times in palace_box', 'times in pillars_box', 
-    # 'times in ticket_box', 'times in CT_ramp_box' (45),
+    # 'times in ticket_box', 'times in CT_ramp_box', alone_death (46),
     
-    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ct_player_3 = [ct_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ct_player_4 = [ct_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    ct_player_5 = [ct_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
-    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    t_player_1 = [t_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    t_player_2 = [t_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    t_player_3 = [t_list[2], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    t_player_4 = [t_list[3], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    t_player_5 = [t_list[4], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "Terrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     
     
     
@@ -189,7 +183,7 @@ def all_roles_in_round(df, file):
         single_round = data[(data['round'] == i) & (data['file'] == file)]
         
         for index, row in single_round.iterrows():
-            '''when a player dies in row do calucations then'''
+            '''when a player dies in row do calculations then'''
             victim = []
             attacker = []
             kill_flag = False
@@ -221,11 +215,15 @@ def all_roles_in_round(df, file):
                     #if a attacker does damage give him an assist,
                     if ([attacker[0], victim[0]]) not in assists:
                         assists.append([attacker[0], victim[0]])
+                        
+                   
                     if victim[1] <= 0 and kill_flag == False:
                         kill_flag = True
+                    
                         
-                        #alone kill
+                        #alone kill and alone death
                         alone_kill = True
+                        alone_death = True
                         distance_to_nearest_teammate = 99999
                         for player in all_players:
                             if ((player[17] == attacker[17]) and (player[1] > 0) and player[0] != attacker[0]):
@@ -234,10 +232,17 @@ def all_roles_in_round(df, file):
                                     distance_to_nearest_teammate = result
                                 if result < 400:
                                     alone_kill = False
-                           
+                            if ((player[17] == victim[17]) and (player[1] > 0) and player[0] != victim[0]):
+                                result2 = distance_between_points([player[19], player[20]], [victim[19], victim[20]])
+                                if result2 < distance_to_nearest_teammate:
+                                    distance_to_nearest_teammate = result2
+                                if result2 < 400:
+                                    alone_death = False
                                     
                         if alone_kill == True:
                             attacker[21] += 1
+                        if alone_death == True:
+                            victim[46] += 1
 
                         #remove assist from list when they kill
                         assists.remove([attacker[0], victim[0]])
@@ -343,7 +348,7 @@ def all_roles_in_round(df, file):
                                     else:
                                         attacker[45] += 1
                                 index_counter += 1
-                        
+                    
                         
 
         ''' POST ROUND CHECKS '''
