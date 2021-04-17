@@ -83,6 +83,11 @@
 * Added total_distance_travel feature which considers time of kills, damage, and deaths in total calculation
 * General unneccessary code removal
 
+## 4/17/2021
+* Adjusted 'total_distance_traveled' to only calculate distance between previous and current loc when the player is at a new location 
+* Removed players whose K/D ratio is < 0.2 to prevent KMeans clustering for accounting for these outliers
+* In a test sample of 8 games with 80 players, only 2 were removed for having a low K/D
+
 ## TODO
 * <s>Pre and Postplants Heatmaps where both sides are victims in engagements</s>
 * <s>Create simuation of single round </s> 

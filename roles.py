@@ -55,7 +55,7 @@ writer = Writer()
 data = pd.DataFrame()
 
 #iterations = 245
-iterations = 100
+iterations = 8
 
 #gets copy of original data\
 writer.main()
@@ -196,7 +196,7 @@ def all_roles_in_round(df, file):
                     victim[18] = "VIC"
                     
                     #total distance travel (victim check)
-                    if victim[1] > 0:
+                    if victim[19] and victim[20] != 0: 
                         
                         victim[47] += abs(distance_between_points([victim[19], victim[20]],[x[1], y[1]]))
                         print(victim[1])
@@ -219,7 +219,7 @@ def all_roles_in_round(df, file):
                     attacker[18] = "ATT"
                     
                     #total distance travel (attacker check)
-                    if attacker[1] > 0:
+                    if attacker[19] and attacker[20] != 0: 
                         attacker[47] += abs(distance_between_points([attacker[19], attacker[20]],[x[0], y[0]]))
                         print(attacker[1])
                         print("attacker last known x/y (", attacker[19], attacker[20], ")")
@@ -426,6 +426,10 @@ for f in all_files:
     main_df = main_df.append(round_df, ignore_index = True)
     index += 1
 
+#Remove outlier players with a K/D less than 0.2     
+main_df = main_df.loc[(main_df["total kills"] / main_df["total deaths"] > 0.2)]       
+
+    
 main_df = main_df.drop(['ID', 'time of kills', 'Health', 'team', 'positioning type', 'last x', 'last y', 'distance to A bomb (on kill list)'], axis=1)
 pd.set_option("display.max_rows", None, "display.max_columns", None, 'expand_frame_repr', False)
 
