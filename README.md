@@ -88,6 +88,11 @@
 * Removed players whose K/D ratio is < 0.2 to prevent KMeans clustering for accounting for these outliers
 * In a test sample of 8 games with 80 players, only 2 were removed for having a low K/D
 
+## 4/20/2021
+* Fixed the removal of players with a KD < 0.2 There was an issue where some players had 0 deaths and we were dividing by 0
+* Completed PCA analysis before computing KMeans clusters. The output is still confusing.
+
+
 ## TODO
 * <s>Pre and Postplants Heatmaps where both sides are victims in engagements</s>
 * <s>Create simuation of single round </s> 

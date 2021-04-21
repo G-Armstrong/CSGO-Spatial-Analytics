@@ -11,7 +11,6 @@ The General Making Choices Approach
 TRADE_KILL                       
 
 ####Grant To-Do####
-ALONE_DEATH
 
 ####PreGame##### Making use of Clustering 
 
@@ -54,8 +53,7 @@ writer = Writer()
 #make empty df   
 data = pd.DataFrame()
 
-#iterations = 245
-iterations = 8
+iterations = 245
 
 #gets copy of original data\
 writer.main()
@@ -138,7 +136,7 @@ def all_roles_in_round(df, file):
     #'times in catwalk_box', 'times in topmid_box', 'times in chair_box', 'times in midlane_box', 'times in underpass_box', 'times in window_box'(29), 
     #'times in stairs_box', 'times in tetris_box', 'times in sandwhich_box', 'times in Asite_box', 'times in firebox_box', 'times in jungle_box', 'times in connector_box',
     # 'times in opening_box', 'times in opening2_box', 'times in A_main_box', 'times in T_ramp_box', 'times in hell_box', 'times in palace_box', 'times in pillars_box', 
-    # 'times in ticket_box', 'times in CT_ramp_box', alone_death, total_distance_traveled (477),
+    # 'times in ticket_box', 'times in CT_ramp_box', alone_death, total_distance_traveled (47)
     
     ct_player_1 = [ct_list[0], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     ct_player_2 = [ct_list[1], 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, [], 0, 0, 0, 0, "CounterTerrorist", "N/A", 0, 0, 0, [], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -162,7 +160,7 @@ def all_roles_in_round(df, file):
     
     single_game = data[(data['file'] == file)]
     highest_round = single_game.loc[single_game['round'].idxmax()]
-    #print("Running file", file,"with max round", highest_round['round'], "...")
+    print("Running file", file,"with max round", highest_round['round'], "...")
     for i in range(1, highest_round['round'] + 1):
         
         #reset health at beginning of round
@@ -177,7 +175,7 @@ def all_roles_in_round(df, file):
         assists = []
         
         ''' ROWS LOOP '''
-        #print("Running round", i,"...")
+        print("Running round", i,"...")
         single_round = data[(data['round'] == i) & (data['file'] == file)]
         
         for index, row in single_round.iterrows():
@@ -199,12 +197,12 @@ def all_roles_in_round(df, file):
                     if victim[19] and victim[20] != 0: 
                         
                         victim[47] += abs(distance_between_points([victim[19], victim[20]],[x[1], y[1]]))
-                        print(victim[1])
-                        print("victim last known x/y (", victim[19], victim[20], ")")
-                        print("victim current x/y (", x[1], y[1], ")" )
-                        print("victim DBP: ", abs(distance_between_points([victim[19], victim[20]],[x[1], y[1]])))
-                        print("victim total distance: ", victim[47])
-                        print()
+                        # print(victim[1])
+                        # print("victim last known x/y (", victim[19], victim[20], ")")
+                        # print("victim current x/y (", x[1], y[1], ")" )
+                        # print("victim DBP: ", abs(distance_between_points([victim[19], victim[20]],[x[1], y[1]])))
+                        # print("victim total distance: ", victim[47])
+                        # print()
                     
                     #Set last x and last y
                     victim[19] = row['victim_mapX']
@@ -221,12 +219,12 @@ def all_roles_in_round(df, file):
                     #total distance travel (attacker check)
                     if attacker[19] and attacker[20] != 0: 
                         attacker[47] += abs(distance_between_points([attacker[19], attacker[20]],[x[0], y[0]]))
-                        print(attacker[1])
-                        print("attacker last known x/y (", attacker[19], attacker[20], ")")
-                        print("attacker current x/y (", x[0], y[0], ")" )
-                        print("attacker DBP: ", abs(distance_between_points([attacker[19], attacker[20]],[x[0], y[0]])))
-                        print("attacker total distance: ", attacker[47])
-                        print()
+                        # print(attacker[1])
+                        # print("attacker last known x/y (", attacker[19], attacker[20], ")")
+                        # print("attacker current x/y (", x[0], y[0], ")" )
+                        # print("attacker DBP: ", abs(distance_between_points([attacker[19], attacker[20]],[x[0], y[0]])))
+                        # print("attacker total distance: ", attacker[47])
+                        # print()
             
                     
                     #Set last x and last y
@@ -424,10 +422,13 @@ for f in all_files:
     round_df = all_roles_in_round(data, f)
    #print('--------------------------------------')
     main_df = main_df.append(round_df, ignore_index = True)
+    
     index += 1
 
-#Remove outlier players with a K/D less than 0.2     
-main_df = main_df.loc[(main_df["total kills"] / main_df["total deaths"] > 0.2)]       
+#Remove outlier players with a K/D less than 0.2
+main_df = main_df.loc[main_df['total deaths'] > 0]
+main_df = main_df.loc[main_df['total kills']/main_df['total deaths'] > 0.2]
+        
 
     
 main_df = main_df.drop(['ID', 'time of kills', 'Health', 'team', 'positioning type', 'last x', 'last y', 'distance to A bomb (on kill list)'], axis=1)
