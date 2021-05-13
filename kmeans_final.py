@@ -17,7 +17,7 @@ kvalue = 5
 features = pd.read_csv('players_df.csv')
 
 #create 5 random center points for pc1 and pc2
-raw_data = make_blobs(n_samples = 2241, n_features = 2, centers = kvalue, cluster_std = 1)
+raw_data = make_blobs(n_samples = 2320, n_features = 2, centers = kvalue, cluster_std = 1)
 
 #Normalize
 scaler = preprocessing.MinMaxScaler()

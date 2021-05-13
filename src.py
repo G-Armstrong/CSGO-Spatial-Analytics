@@ -31,12 +31,13 @@ def pointy_to_resolutiony(yinput,startY=-3401,endY=1682,resY=1024):
 
 class Writer:
     def __init__(self):
-        self.data = pd.read_csv('./input/mm_master_demos.csv')
+        self.data = pd.read_csv('./input/mm_master_demos.csv') 
         self.analyzed_map = 'de_mirage' 
         
         # Filter by map & type of rounds, we don't want eco rounds as those tend to be more aggressive
         self.data = self.data[(self.data.map == self.analyzed_map) & (self.data.round_type == 'NORMAL')]
         
+        #comment out to reproduce Heat Maps with reader.py
         self.data['attacker_mapX'] = self.data['att_pos_x'].apply(pointx_to_resolutionx)
         self.data['attacker_mapY'] = self.data['att_pos_y'].apply(pointy_to_resolutiony)
         self.data['victim_mapX'] = self.data['vic_pos_x'].apply(pointx_to_resolutionx)
@@ -106,7 +107,9 @@ class Writer:
     
     def main(self):
         print("Creating Round File...")
-        mask=self.data
+        #mask=self.data
+        mask = self.data[(self.data['bomb_site'] == 'A')]
+
         
         #list of all unique files (games)
         fn = mask['file'].tolist() #[file1 (0), file2 (1)]

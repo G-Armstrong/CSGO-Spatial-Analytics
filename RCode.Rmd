@@ -1,0 +1,33 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+ 
+
+```{r}
+options(scipen=999)
+
+labeleddf<-read.csv("./labeled_players_df.csv")
+labeleddf
+return_me<-read.csv("./players_df.csv")
+return_me
+```
+
+```{r}
+for(i in 1:nrow(return_me)){
+  
+  
+  for(j in 1:nrow(labeleddf)){
+    
+    if(labeleddf$total_distance_traveled[j] == return_me$total_distance_traveled[i]){
+      return_me$Role[i] = labeleddf$Role[j]
+    }
+    
+  }
+  
+  
+}
+
+write.csv(return_me,"C:\\Users\\Grant\\CSGO-Spatial-Analytics\\keep_me_df.csv", row.names = FALSE)
+```
+

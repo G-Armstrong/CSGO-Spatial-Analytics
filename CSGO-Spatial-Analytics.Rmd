@@ -1,0 +1,125 @@
+---
+name: Grant Armstrong 
+date: 5/1/2021
+title: "R Notebook"
+output: html_notebook
+---
+schematic E: https://www.researchgate.net/figure/Illustrations-of-example-data-partitioning-schemes-A-a-single-train-test-split-B-a_fig1_333930804
+
+
+```{r}
+data<-read.csv("./players_df3.csv")
+data
+
+#Remove unnecessary feature columns where 2 = "kills", 10 = "Fast kill rating", 17:38 = all box checks
+data <- data[,-c(2,10,17:38)]
+#data <- data[,-c(1,2,4,12,13,18:21,23)]
+data
+str(data) #2241 rows
+
+
+#Remove rows with unlabeled "Role" column
+training <- na.omit(data)
+str(training) #168 rows
+#training
+
+#All other rows become testing data
+testing <- data[(is.na(data$Role)),]
+str(testing) #2073 rows
+
+
+
+```
+
+Train the Decision Tree (DT) on different subsets of the training data
+4-fold cross validation 
+```{r}
+library(rpart.plot)
+model.train <-rpart(Role ~ .,training,method="class")
+
+
+#empty vectors to store everything
+precisionsVec<-vector() #for storing performance measures for all 10 models
+recallsVec<-vector()
+accuracyVec<-vector()
+fmeasureVec<-vector()
+
+
+set.seed(88) #set seed so we can replicate our reults every time
+shuffledData<-training[sample(nrow(training)),] #Randomly shuffle the data
+
+# Divide dataset by 4 for 4 folds, start rowCount counter at 1
+partitionSize <- round(nrow(training)/4) - 1
+print(partitionSize) 
+rowCount <- 1
+
+#Perform 4 fold cross validation
+for(i in 1:4){
+
+    # Upperbound is basically rowCount + fold/partition size
+    upperBound <- min(rowCount + partitionSize, nrow(shuffledData))
+    validation_set <- shuffledData[rowCount:upperBound,]
+    trainData <- shuffledData[-(rowCount:upperBound),]
+    #Use the validation and train data partitions however you desire...
+    classifier <-rpart(Role ~ .,trainData,method="class")
+    
+    #confusion matrix 
+    vpred<-predict(classifier,validation_set, type="class")
+    tab <-table(data.frame(validation_set$Role, pred=vpred))
+    print(tab); #Prints confusion matrix for all 4 folds 
+    dim(tab)
+
+    #calculating performance measures
+    accuracy <- sum(diag(tab))/sum(tab)
+    precision <- tab[1,1] / sum(tab[1,]) # Precision = TP / (TP + FP)
+    recall <- tab[1,1] / sum(tab[,1]) # Recall = TP / (TP + FN)
+    fmeasure <- 2 * precision * recall / (precision + recall)
+    
+    #adding performance measures in 
+    accuracyVec<-c(accuracyVec,accuracy)
+    precisionsVec<-c(precisionsVec, precision)
+    recallsVec<-c(recallsVec,recall)
+    fmeasureVec<-c(fmeasureVec, fmeasure )
+    
+    #Increment rowCount for next iteration
+    rowCount <- rowCount + partitionSize + 1
+}
+
+
+```
+ accuracy, precision, recall, and F1 score on the validation set
+```{r}
+print("Average Precision:")
+mean(precisionsVec)
+
+print("Average Recall:" )
+mean(recallsVec)
+
+print("Average Accuracy:" )
+mean(accuracyVec)
+print("Average F-measure:")
+mean(fmeasureVec)
+```
+
+Deploy model on Test Data
+```{r}
+vpred<-predict(classifier,testing, type="class")
+summary(vpred) #1985 observations
+roles <- c()
+
+# Add `quantity` to the `df` data frame
+
+for (ele in vpred){
+  roles<-c(roles, ele)
+}
+testing$Role <-roles
+new <- rbind(training, testing)
+str(new)
+write.csv(new,"C:\\Users\\Grant\\CSGO-Spatial-Analytics\\labeled_players_df.csv", row.names = FALSE)
+
+
+
+
+
+```
+

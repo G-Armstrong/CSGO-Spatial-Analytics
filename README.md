@@ -92,6 +92,16 @@
 * Fixed the removal of players with a KD < 0.2 There was an issue where some players had 0 deaths and we were dividing by 0
 * Completed PCA analysis before computing KMeans clusters. The output is still confusing.
 
+## 5/12/2021
+* Code from src.py class Writer was modified to rewrite file_to_rounds.txt to only include those files and rounds where 'A' bombsite is attacked
+* In roles.py there was a serious issue causing the rounds loop to loop over all files in data imported from src.py main. This meant that the players_df output was not specific to rounds where A was attacked
+  and players were being tracked for features over the entire course of the file 
+	** Now, file_to_rounds servers a basis to select only those rounds where A is attacked.
+* Features need to be relooked at to confirm their accuracy under this new paradigm 
+* The creation of a role heat map is in progress
+	** I realized that the data frame of labeled players was not overlapping with rows of data selected only for preplant A terrorists who attack in their engagements 
+	** I am hoping that the rewritten players_df (once relabeled with role numbers) will include player IDs for those preplant attacking terrorists so that a heat map can be created of roles for attackers and the outcome of those positons  
+
 
 ## TODO
 * <s>Pre and Postplants Heatmaps where both sides are victims in engagements</s>

@@ -107,7 +107,7 @@ def distance_between_points(P, Q):
     result = ((((x2 - x1 )**2) + ((y2-y1)**2) )**0.5)
     return result
 
-def all_roles_in_round(df, file): 
+def all_roles_in_round(df, file, rnds): 
     
 ############################### VARIABLES ###############################
     ct_list, t_list = find_team_ids(file)
@@ -158,10 +158,14 @@ def all_roles_in_round(df, file):
     
     ''' ROUNDS LOOP '''
     
-    single_game = data[(data['file'] == file)]
-    highest_round = single_game.loc[single_game['round'].idxmax()]
-    print("Running file", file,"with max round", highest_round['round'], "...")
-    for i in range(1, highest_round['round'] + 1):
+    # single_game = data[(data['file'] == file)]
+    # highest_round = single_game.loc[single_game['round'].idxmax()]
+    # print("Running file", file,"with max round", highest_round['round'], "...")
+    # for i in range(1, highest_round['round'] + 1):
+       
+    rounds = rnds
+    print("Running file", file, "with", len(rounds), "rounds...")
+    for i in rounds:
         
         #reset health at beginning of round
         for player in all_players:
@@ -414,31 +418,33 @@ def all_roles_in_round(df, file):
     
 all_files = data.file.unique()
 
-index = 0
 
-for f in all_files:
-    if index == iterations:
-        break
-    round_df = all_roles_in_round(data, f)
-   #print('--------------------------------------')
+
+for f,rnd in file_to_rounds.items():
+    round_df = all_roles_in_round(data, f, rnd)
     main_df = main_df.append(round_df, ignore_index = True)
     
-    index += 1
+    
+# for f in all_files:
+#     if index == iterations:
+#         break
+#     round_df = all_roles_in_round(data, f)
+#     #print('--------------------------------------')
+#     main_df = main_df.append(round_df, ignore_index = True)
+    
+#     index += 1
 
 #Remove outlier players with a K/D less than 0.2
-main_df = main_df.loc[main_df['total deaths'] > 0]
-main_df = main_df.loc[main_df['total kills']/main_df['total deaths'] > 0.2]
-        
+# main_df = main_df.loc[main_df['total deaths'] > 0]
+# main_df = main_df.loc[main_df['total kills']/main_df['total deaths'] > 0.2]
 
-    
-main_df = main_df.drop(['ID', 'time of kills', 'Health', 'team', 'positioning type', 'last x', 'last y', 'distance to A bomb (on kill list)'], axis=1)
+#main_df.to_csv('doNOTdelete.csv', index = False, encoding='utf-8')
+ 
+main_df = main_df.drop(['time of kills', 'Health', 'team', 'positioning type', 'last x', 'last y', 'distance to A bomb (on kill list)'], axis=1)
 pd.set_option("display.max_rows", None, "display.max_columns", None, 'expand_frame_repr', False)
 
-
-print(main_df.head())
-    
 #save to csv
-main_df.to_csv('players_df.csv', index = False, encoding='utf-8')
+main_df.to_csv('with_file_to_rounds.csv', index = False, encoding='utf-8')
     
 
 
